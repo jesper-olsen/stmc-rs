@@ -57,7 +57,6 @@ impl Marsaglia {
             uni += 1.0;
         }
         self.u[self.ip] = uni;
-        self.ip = if self.ip == 0 { N - 1 } else { self.ip - 1 };
         self.jp = if self.jp == 0 { N - 1 } else { self.jp - 1 };
         self.c -= self.cd;
         if self.c < 0.0 {
@@ -84,5 +83,34 @@ fn main() {
             }
             println!();
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[cfg(test)]
+    use crate::Marsaglia;
+    fn it_works() {
+        let mut rng = Marsaglia::new(12, 34, 56, 78);
+        let mut l = Vec::new();
+        for ii in 1..=20005 {
+            let x = rng.uni();
+            if ii > 20000 {
+                for i in 1..=7 {
+                    let v = (x * 16.0_f64.powi(i)) as i32;
+                    let v = v % 16;
+                    l.push(v);
+                }
+            }
+        }
+        #[rustfmt::skip]
+        const R: [i32; 35] = [
+            6, 3, 11,  3,  0,  4, 0, 
+           13, 8, 15, 11, 11, 14, 0, 
+            6, 15, 0,  2,  3, 11, 0, 
+            5, 14, 2, 14,  4,  8, 0, 
+            7, 15, 7, 10, 12,  2, 0,
+        ];
+        assert!(l.iter().eq(R.iter()));
     }
 }
