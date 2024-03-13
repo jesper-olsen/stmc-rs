@@ -1,6 +1,6 @@
 // Rust implementation of the pseudo random number generator presented in
 // TOWARD A UNIVERSAL RANDOM NUMBER GENERATOR
-// George MARSAGLIA and Arif ZAMAN
+// George MARSAGLIA, Arif ZAMAN and Wai Wan TSANG 
 // Statistics & Probability Letters 8 (1990) 35-39
 
 const N: usize = 97;
