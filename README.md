@@ -14,7 +14,7 @@ Run
 -----
 
 ```
-% time cargo run --release
+% time cargo run --bin main --release
 
 Frequency of samples in [0;0.4)
 k, #samples, frequency, error
