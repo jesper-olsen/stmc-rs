@@ -14,9 +14,10 @@ Run
 -----
 
 ```
-% cargo run 
+% time cargo run --release
 
 Frequency of samples in [0;0.4)
+k, #samples, frequency, error
   1        2 0.50000000000000000000 +9.999999999999998e-2
   2        8 0.37500000000000000000 +2.5000000000000022e-2
   3       32 0.37500000000000000000 +2.5000000000000022e-2
@@ -29,7 +30,7 @@ Frequency of samples in [0;0.4)
  10   524288 0.40006065368652343750 +6.0653686523415296e-5
  11  2097152 0.39999675750732421875 +3.2424926758034545e-6
 
-Histogram - 100 samples
+Histogram - 100 samples, 10 bins
 Bin 0:    4
 Bin 1:   18
 Bin 2:   11
@@ -41,7 +42,7 @@ Bin 7:   11
 Bin 8:    7
 Bin 9:   15
 
-Histogram - 100000 samples
+Histogram - 100000 samples, 10 bins
 Bin 0:        9998
 Bin 1:       10012
 Bin 2:       10005
@@ -52,5 +53,12 @@ Bin 6:       10000
 Bin 7:       10002
 Bin 8:        9996
 Bin 9:       10000
-```
 
+min, max and their frequencies over 10000000000 samples
+min 0; count 595
+max 0.9999999403953552; count 597
+
+real	0m57.333s
+user	0m53.711s
+sys	0m0.072s
+```
