@@ -1,5 +1,8 @@
 use marsaglia_rs::Marsaglia;
 use std::collections::HashMap;
+use ndarray::Array1;
+use statrs::function::erf::erf;
+
 
 fn frequency_test() {
     let p = 0.4;
@@ -35,7 +38,7 @@ fn uniform_histogram() {
         }
 
         let dx = 1.0 / bins.len() as f64;
-        let sum: f64 = dx*histogram.values().sum::<usize>() as f64;
+        let sum: f64 = dx * histogram.values().sum::<usize>() as f64;
 
         let mut v = Vec::new();
         for bin in bins {
@@ -101,31 +104,36 @@ fn gaussian_histogram() {
         println!("Bin {bin:2}: {:width$}", histogram[&bin]);
     }
 
-        let dx = 6.0 / bins.len() as f64;
-        let sum: f64 = dx*histogram.values().sum::<usize>() as f64;
+    let dx = 6.0 / bins.len() as f64;
+    let sum: f64 = dx * histogram.values().sum::<usize>() as f64;
 
-        let mut ymax=0.0;
-        let mut v = Vec::new();
-        for bin in bins {
-            let x = bin as f64 / 10.0;
-            let y = histogram[&bin] as f64 / sum;
-            if y > ymax {
-                ymax = y;
-            }
-            v.push((x, y));
-            v.push((x + dx, y));
+    let mut ymax = 0.0;
+    let mut v = Vec::new();
+    for bin in bins {
+        let x = bin as f64 / 10.0;
+        let y = histogram[&bin] as f64 / sum;
+        if y > ymax {
+            ymax = y;
         }
-    plot1("plot1.png", vec![(String::from("Histogram"),v)], ymax + 0.1);
+        v.push((x, y));
+        v.push((x + dx, y));
+    }
+    plot1(
+        "plot1.png",
+        vec![(String::from("Histogram"), v)],
+        ymax + 0.1,
+    );
 }
 
 fn main() {
     frequency_test();
 
     uniform_histogram();
-    //min_max_test();
+    min_max_test();
 
     gaussian_histogram();
 
+    plot2(); //cdf
 }
 
 use plotters::prelude::*;
@@ -183,11 +191,25 @@ fn cauchy_pdf(x: f64, x0: f64, gamma: f64) -> f64 {
     1.0 / (PI * gamma * (1.0 + ((x - x0) / gamma).powi(2)))
 }
 
+fn cauchy_cdf(x: f64, x0: f64, gamma: f64) -> f64 {
+    1.0 / std::f64::consts::PI * ((x - x0) / gamma).atan() + 0.5
+}
+
 fn uniform_pdf(x: f64, x0: f64, x1: f64) -> f64 {
-    if x>=x0 && x<=x1 {
-        1.0/(x1-x0)
+    if x >= x0 && x <= x1 {
+        1.0 / (x1 - x0)
     } else {
         0.0
+    }
+}
+
+fn uniform_cdf(x: f64, x0: f64, x1: f64) -> f64 {
+    if x < x0 {
+        0.0
+    } else if x < x1 {
+        (x - x0) / (x1 - x0)
+    } else {
+        1.0
     }
 }
 
@@ -223,39 +245,111 @@ fn plot1(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
         .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
     });
 
-    
-    let data = (-30..=30).map(|x| x as f64/10.0).map(|x| (x, gaussian_pdf(x,0.0,1.0)));
+    let data = (-30..=30)
+        .map(|x| x as f64 / 10.0)
+        .map(|x| (x, gaussian_pdf(x, 0.0, 1.0)));
     //let v: Vec<(f64,f64)> = data.clone().collect();
     //println!("{:?}", v);
     //let colour=GREEN;
     let colour = Palette99::pick(2).mix(0.9);
-    ctx.draw_series(
-      LineSeries::new(data, &colour)
-    ).unwrap()
-    .label("Gaussian")
-    .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
+    ctx.draw_series(LineSeries::new(data, &colour))
+        .unwrap()
+        .label("Gaussian")
+        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
 
-    let data = (-30..=30).map(|x| x as f64/10.0).map(|x| (x, cauchy_pdf(x,0.0,1.0)));
+    let data = (-30..=30)
+        .map(|x| x as f64 / 10.0)
+        .map(|x| (x, cauchy_pdf(x, 0.0, 1.0)));
     let colour = Palette99::pick(3).mix(0.9);
-    ctx.draw_series(
-      LineSeries::new(data, &colour)
-    ).unwrap()
-    .label("Cauchy")
-    .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
+    ctx.draw_series(LineSeries::new(data, &colour))
+        .unwrap()
+        .label("Cauchy")
+        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
 
-    let data = (-30..=30).map(|x| x as f64/10.0).map(|x| (x, uniform_pdf(x,-1.0,1.0)));
+    let data = (-30..=30)
+        .map(|x| x as f64 / 10.0)
+        .map(|x| (x, uniform_pdf(x, -1.0, 1.0)));
     let colour = Palette99::pick(4).mix(0.9);
-    ctx.draw_series(
-      LineSeries::new(data, &colour)
-    ).unwrap()
-    .label("Uniform")
-    .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
+    ctx.draw_series(LineSeries::new(data, &colour))
+        .unwrap()
+        .label("Uniform")
+        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
 
     ctx.configure_series_labels()
         .border_style(&BLACK)
         .background_style(&WHITE.mix(0.8))
         .position(SeriesLabelPosition::UpperRight)
         .margin(20)
+        .draw()
+        .unwrap();
+}
+
+// reproduces fig 1.5 p. 26
+fn plot2() {
+    // Generate x-values
+    let x: Array1<f64> = Array1::linspace(-3.0, 3.0, 1000);
+
+    // Calculate CDFs
+    let gauss_cdf = x.map(|x| 0.5 * (1.0 + erf(x / (2.0f64.sqrt()))));
+    let cau_cdf = x.map(|x| cauchy_cdf(*x, 0.0,1.0));
+    let uni_cdf = x.map(|x| uniform_cdf(*x, -1.0,1.0));
+
+    // Set up the plot
+    let root = BitMapBackend::new("plot2.png", (800, 600)).into_drawing_area();
+    root.fill(&WHITE).unwrap();
+
+    let mut chart = ChartBuilder::on(&root)
+        .caption(
+            "CDF Comparison: Gaussian vs Cauchy vs Uniform",
+            ("sans-serif", 20).into_font(),
+        )
+        .margin(5)
+        .x_label_area_size(40)
+        .y_label_area_size(40)
+        .build_cartesian_2d(-3.0..3.0, 0.0..1.0)
+        .unwrap();
+
+    // Plot CDFs
+    chart
+        .configure_mesh()
+        .x_desc("X")
+        .y_desc("F")
+        .x_labels(5)
+        .y_labels(10)
+        .draw()
+        .unwrap();
+
+    chart
+        .draw_series(LineSeries::new(
+            x.iter().cloned().zip(gauss_cdf.iter().cloned()),
+            &RED,
+        ))
+        .unwrap()
+        .label("Gaussian CDF")
+        .legend(|(x, y)| Path::new(vec![(x, y), (x + 20, y)], &RED));
+
+    chart
+        .draw_series(LineSeries::new(
+            x.iter().cloned().zip(cau_cdf.iter().cloned()),
+            &BLUE,
+        ))
+        .unwrap()
+        .label("Cauchy CDF")
+        .legend(|(x, y)| Path::new(vec![(x, y), (x + 20, y)], &BLUE));
+
+    chart
+        .draw_series(LineSeries::new(
+            x.iter().cloned().zip(uni_cdf.iter().cloned()),
+            &GREEN,
+        ))
+        .unwrap()
+        .label("Uniform CDF")
+        .legend(|(x, y)| Path::new(vec![(x, y), (x + 20, y)], &BLUE));
+
+    chart
+        .configure_series_labels()
+        .background_style(&WHITE.mix(0.8))
+        .border_style(&BLACK)
         .draw()
         .unwrap();
 }
