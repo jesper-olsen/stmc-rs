@@ -2,6 +2,8 @@ use marsaglia_rs::Marsaglia;
 use std::collections::HashMap;
 use ndarray::Array1;
 use statrs::function::erf::erf;
+use plotters::prelude::*;
+use std::f64::consts::PI;
 
 
 fn frequency_test() {
@@ -129,14 +131,12 @@ fn main() {
     frequency_test();
 
     uniform_histogram();
-    min_max_test();
+    //min_max_test();
 
     gaussian_histogram();
 
     plot2(); //cdf
 }
-
-use plotters::prelude::*;
 
 // reproduces fig 1.2 p. 14
 fn plot0(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
@@ -178,8 +178,6 @@ fn plot0(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
         .draw()
         .unwrap();
 }
-
-use std::f64::consts::PI;
 
 fn gaussian_pdf(x: f64, mean: f64, std_dev: f64) -> f64 {
     let exponent = -((x - mean) * (x - mean)) / (2.0 * std_dev * std_dev);

@@ -4,6 +4,7 @@
 // Statistics & Probability Letters 8 (1990) 35-39
 
 const N: usize = 97;
+use std::f64::consts::PI;
 
 pub struct Marsaglia {
     u: [f64; N],
@@ -72,6 +73,7 @@ impl Marsaglia {
         }
     }
 
+    // normally distributed random number
     pub fn gauss(&mut self) -> f64 {
         if let Some(r) = self.gauss {
             self.gauss = None;
@@ -85,7 +87,30 @@ impl Marsaglia {
             r * phi.cos()
         }
     }
+
+    // cauchy distributed random number
+    pub fn cauchy(&mut self) -> f64 {
+      (2.0*PI*self.uni()).tan()
+    }
 }
+
+pub fn qtiles(x: &[f64], q: f64) -> Option<(f64, f64)> {
+    let n = x.len();
+    let nq = (q * n as f64) as usize;
+
+    if nq == 0 || nq >= n {
+        return None; // Return None if NQ is invalid
+    }
+
+    let w2 = q * (n + 1) as f64 - nq as f64;
+    let w1 = 1.0 - w2;
+
+    let xq1 = w1 * x[nq - 1] + w2 * x[nq];
+    let xq2 = w1 * x[n - nq] + w2 * x[n - nq - 1];
+
+    Some((xq1, xq2))
+}
+
 
 #[cfg(test)]
 mod tests {
