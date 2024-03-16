@@ -23,6 +23,7 @@ impl Marsaglia {
     //C*** NOTE: RSTART CHANGES I, J, K, L
     //C*** SO BE CAREFUL IF YOU REUSE
     //C* * * THEM IN THE CALLING PROGRAM.
+
     pub fn new(mut i: i32, mut j: i32, mut k: i32, mut l: i32) -> Self {
         let mut u = [0.0; N];
         for e in u.iter_mut().take(N) {
@@ -60,6 +61,7 @@ impl Marsaglia {
             uni += 1.0;
         }
         self.u[self.ip] = uni;
+        self.ip = if self.ip == 0 { N - 1 } else { self.ip - 1 };
         self.jp = if self.jp == 0 { N - 1 } else { self.jp - 1 };
         self.c -= self.cd;
         if self.c < 0.0 {
@@ -90,7 +92,7 @@ impl Marsaglia {
 
     // cauchy distributed random number
     pub fn cauchy(&mut self) -> f64 {
-      (2.0*PI*self.uni()).tan()
+        (2.0 * PI * self.uni()).tan()
     }
 }
 
@@ -111,11 +113,10 @@ pub fn qtiles(x: &[f64], q: f64) -> Option<(f64, f64)> {
     Some((xq1, xq2))
 }
 
-
 #[cfg(test)]
 mod tests {
-    #[cfg(test)]
     use crate::Marsaglia;
+    #[test]
     fn it_works() {
         let mut rng = Marsaglia::new(12, 34, 56, 78);
         let mut l = Vec::new();

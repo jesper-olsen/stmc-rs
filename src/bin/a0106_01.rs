@@ -1,4 +1,4 @@
-use marsaglia_rs::{Marsaglia,qtiles};
+use marsaglia_rs::{qtiles, Marsaglia};
 
 fn main() {
     println!();
@@ -14,21 +14,23 @@ fn main() {
         // Generate Cauchy distributed random numbers
         let mut rng = Marsaglia::new(12, 34, 56, 78);
         let mut data = vec![0.0; n];
-        for i in 0..n {
-            data[i]=rng.cauchy();
+        for e in data.iter_mut().take(n) {
+            *e = rng.cauchy();
         }
-       
+
         data.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
         // Calculate quantiles
-        let (x05, xhalf) = qtiles(&data, 0.50).unwrap();
+        let (x05, _) = qtiles(&data, 0.50).unwrap();
         let (x025, x075) = qtiles(&data, 0.25).unwrap();
         let (x015, x085) = qtiles(&data, 0.15).unwrap();
 
         println!("{k:>4} {n:>8} {x05:>10.4} {x025:>10.4} {x075:>10.4} {x015:>10.4} {x085:>10.4}");
     }
-        println!("       EXACT: {:>10.4} {:>10.4} {:>10.4} {:>10.4} {:>10.4}", 0.0000, -1.00000, 1.0000, -1.9626, 1.9626);
+    println!(
+        "       EXACT: {:>10.4} {:>10.4} {:>10.4} {:>10.4} {:>10.4}",
+        0.0000, -1.00000, 1.0000, -1.9626, 1.9626
+    );
 
     println!("MEDIAN DEFINITIONS AGREE.");
 }
-

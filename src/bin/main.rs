@@ -1,10 +1,9 @@
 use marsaglia_rs::Marsaglia;
-use std::collections::HashMap;
 use ndarray::Array1;
-use statrs::function::erf::erf;
 use plotters::prelude::*;
+use statrs::function::erf::erf;
+use std::collections::HashMap;
 use std::f64::consts::PI;
-
 
 fn frequency_test() {
     let p = 0.4;
@@ -92,7 +91,8 @@ fn gaussian_histogram() {
     (0..m)
         .map(|_| rng.gauss())
         .map(|z| (10.0 * z).floor() as i32)
-        .filter(|&b| b >= -30 && b <= 30)
+        .filter(|&b| (-30..=30).contains(&b))
+        //.filter(|&b| b >= -30 && b <= 30)
         .for_each(|bin| {
             let count = histogram.entry(bin).or_insert(0);
             *count += 1
@@ -131,7 +131,7 @@ fn main() {
     frequency_test();
 
     uniform_histogram();
-    //min_max_test();
+    min_max_test();
 
     gaussian_histogram();
 
@@ -159,20 +159,20 @@ fn plot0(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
         };
         ctx.draw_series(
             AreaSeries::new(
-                h.into_iter(),
-                0.0,              // Baseline
-                &colour.mix(0.2), // Make the series opac
+                h,
+                0.0,             // Baseline
+                colour.mix(0.2), // Make the series opac
             )
-            .border_style(&colour), // Make a brighter border
+            .border_style(colour), // Make a brighter border
         )
         .unwrap()
         .label(label)
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
+        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
     });
 
     ctx.configure_series_labels()
-        .border_style(&BLACK)
-        .background_style(&WHITE.mix(0.8))
+        .border_style(BLACK)
+        .background_style(WHITE.mix(0.8))
         .position(SeriesLabelPosition::UpperRight)
         .margin(20)
         .draw()
@@ -232,28 +232,26 @@ fn plot1(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
         };
         ctx.draw_series(
             AreaSeries::new(
-                h.into_iter(),
-                0.0,              // Baseline
-                &colour.mix(0.2), // Make the series opac
+                h,
+                0.0,             // Baseline
+                colour.mix(0.2), // Make the series opac
             )
-            .border_style(&colour), // Make a brighter border
+            .border_style(colour), // Make a brighter border
         )
         .unwrap()
         .label(label)
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
+        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
     });
 
     let data = (-30..=30)
         .map(|x| x as f64 / 10.0)
         .map(|x| (x, gaussian_pdf(x, 0.0, 1.0)));
-    //let v: Vec<(f64,f64)> = data.clone().collect();
-    //println!("{:?}", v);
-    //let colour=GREEN;
+
     let colour = Palette99::pick(2).mix(0.9);
     ctx.draw_series(LineSeries::new(data, &colour))
         .unwrap()
         .label("Gaussian")
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
+        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
 
     let data = (-30..=30)
         .map(|x| x as f64 / 10.0)
@@ -262,7 +260,7 @@ fn plot1(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
     ctx.draw_series(LineSeries::new(data, &colour))
         .unwrap()
         .label("Cauchy")
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
+        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
 
     let data = (-30..=30)
         .map(|x| x as f64 / 10.0)
@@ -271,11 +269,11 @@ fn plot1(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
     ctx.draw_series(LineSeries::new(data, &colour))
         .unwrap()
         .label("Uniform")
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], &colour));
+        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
 
     ctx.configure_series_labels()
-        .border_style(&BLACK)
-        .background_style(&WHITE.mix(0.8))
+        .border_style(BLACK)
+        .background_style(WHITE.mix(0.8))
         .position(SeriesLabelPosition::UpperRight)
         .margin(20)
         .draw()
@@ -289,8 +287,8 @@ fn plot2() {
 
     // Calculate CDFs
     let gauss_cdf = x.map(|x| 0.5 * (1.0 + erf(x / (2.0f64.sqrt()))));
-    let cau_cdf = x.map(|x| cauchy_cdf(*x, 0.0,1.0));
-    let uni_cdf = x.map(|x| uniform_cdf(*x, -1.0,1.0));
+    let cau_cdf = x.map(|x| cauchy_cdf(*x, 0.0, 1.0));
+    let uni_cdf = x.map(|x| uniform_cdf(*x, -1.0, 1.0));
 
     // Set up the plot
     let root = BitMapBackend::new("plot2.png", (800, 600)).into_drawing_area();
@@ -320,34 +318,34 @@ fn plot2() {
     chart
         .draw_series(LineSeries::new(
             x.iter().cloned().zip(gauss_cdf.iter().cloned()),
-            &RED,
+            RED,
         ))
         .unwrap()
         .label("Gaussian CDF")
-        .legend(|(x, y)| Path::new(vec![(x, y), (x + 20, y)], &RED));
+        .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], RED));
 
     chart
         .draw_series(LineSeries::new(
             x.iter().cloned().zip(cau_cdf.iter().cloned()),
-            &BLUE,
+            BLUE,
         ))
         .unwrap()
         .label("Cauchy CDF")
-        .legend(|(x, y)| Path::new(vec![(x, y), (x + 20, y)], &BLUE));
+        .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], BLUE));
 
     chart
         .draw_series(LineSeries::new(
             x.iter().cloned().zip(uni_cdf.iter().cloned()),
-            &GREEN,
+            GREEN,
         ))
         .unwrap()
         .label("Uniform CDF")
-        .legend(|(x, y)| Path::new(vec![(x, y), (x + 20, y)], &BLUE));
+        .legend(|(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], BLUE));
 
     chart
         .configure_series_labels()
-        .background_style(&WHITE.mix(0.8))
-        .border_style(&BLACK)
+        .background_style(WHITE.mix(0.8))
+        .border_style(BLACK)
         .draw()
         .unwrap();
 }
