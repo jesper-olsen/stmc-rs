@@ -12,6 +12,7 @@ pub struct Marsaglia {
     cm: f64,
     ip: usize,
     jp: usize,
+    gauss: Option<f64>,
 }
 
 impl Marsaglia {
@@ -48,6 +49,7 @@ impl Marsaglia {
             cm: 16777213. / 16777216.,
             ip: N - 1,
             jp: 32,
+            gauss: None,
         }
     }
 
@@ -67,6 +69,20 @@ impl Marsaglia {
             uni + 1.0
         } else {
             uni
+        }
+    }
+
+    pub fn gauss(&mut self) -> f64 {
+        if let Some(r) = self.gauss {
+            self.gauss = None;
+            r
+        } else {
+            let u1 = self.uni();
+            let u2 = self.uni();
+            let r = (-2.0 * u1.ln()).sqrt();
+            let phi = 2.0 * std::f64::consts::PI * u2;
+            self.gauss = Some(r * phi.sin());
+            r * phi.cos()
         }
     }
 }
