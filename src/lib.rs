@@ -83,7 +83,7 @@ impl Marsaglia {
         } else {
             let u1 = self.uni();
             let u2 = self.uni();
-            let r = (-2.0 * u1.ln()).sqrt();
+            let r = (-2.0 * (1.0 - u1).ln()).sqrt();
             let phi = 2.0 * std::f64::consts::PI * u2;
             self.gauss = Some(r * phi.sin());
             r * phi.cos()

@@ -225,4 +225,3 @@ fn main() {
     gaussian_histogram();
     plot2("fig1_5.png");
 }
-

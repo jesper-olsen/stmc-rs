@@ -47,7 +47,7 @@ fn main() {
 
 // reproduces fig 1.2 p. 14
 fn plot(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
-    println!("Saving plot: {fname}"); 
+    println!("Saving plot: {fname}");
     let root_area = BitMapBackend::new(fname, (600, 400)).into_drawing_area();
     root_area.fill(&WHITE).unwrap();
 
