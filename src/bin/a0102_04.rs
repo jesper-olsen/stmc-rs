@@ -41,10 +41,6 @@ fn uniform_histogram() {
     plot("fig1_2.png", graphs, ymax + 0.1);
 }
 
-fn main() {
-    uniform_histogram();
-}
-
 // reproduces fig 1.2 p. 14
 fn plot(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
     println!("Saving plot: {fname}");
@@ -85,4 +81,8 @@ fn plot(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
         .margin(20)
         .draw()
         .unwrap();
+}
+
+fn main() {
+    uniform_histogram();
 }
