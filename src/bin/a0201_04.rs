@@ -32,7 +32,6 @@ fn main() {
     const KMAX: usize = 6;
     const NDT0: usize = 2usize.pow(KMAX as u32);
     const NRPT: usize = 10_000;
-    let mut dat0 = [0.0; NDT0];
     let mut wght = [0.0; KMAX];
     let mut va0 = [0.0; NRPT];
     let mut va1 = [0.0; NRPT];
@@ -43,6 +42,7 @@ fn main() {
     for j in 0..NRPT {
         let mut i = 0;
         let mut dat1 = [0.0; KMAX];
+        let mut dat0 = [0.0; NDT0];
         for k in 0..KMAX {
             let ndat = if k == KMAX - 1 {
                 2
