@@ -2,6 +2,8 @@ use std::io;
 
 pub mod gamma;
 pub mod marsaglia;
+pub mod plot;
+pub mod steb;
 
 fn get_input() -> String {
     let mut s = String::new();

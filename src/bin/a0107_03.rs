@@ -2,14 +2,6 @@ use marsaglia_rs::gamma::gamma_ln;
 use marsaglia_rs::marsaglia::Marsaglia;
 use std::f64::consts::PI;
 
-fn gamma_ln_test() {
-    // ln(1), ln(1), ln(2) => 0.0, 0.0, 0.693 ...
-    let x_values = vec![1.0, 2.0, 3.0];
-    for x in x_values {
-        println!("Gamma_ln({}) = {}", x, gamma_ln(x));
-    }
-}
-
 // C MOMENTS FOR NORMALLY DISTRIBUTED RANDOM NUMBERS.
 fn main() {
     let mut rng = Marsaglia::new(12, 34, 56, 78);
