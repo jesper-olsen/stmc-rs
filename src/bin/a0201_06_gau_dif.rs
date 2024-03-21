@@ -1,6 +1,6 @@
-use std::io;
-use marsaglia_rs::gamma::{gamma_ln, gamma_p, error_f};
+use marsaglia_rs::gamma::{error_f, gamma_ln, gamma_p};
 use marsaglia_rs::get_float;
+use std::io;
 
 fn gaudif(xm1: f64, eb1: f64, xm2: f64, eb2: f64) -> f64 {
     let sigma = (eb1.powi(2) + eb2.powi(2)).sqrt();

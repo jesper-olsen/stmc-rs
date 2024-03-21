@@ -1,7 +1,7 @@
 use std::io;
 
-pub mod marsaglia;
 pub mod gamma;
+pub mod marsaglia;
 
 fn get_input() -> String {
     let mut s = String::new();
@@ -36,4 +36,13 @@ pub fn qtiles(x: &[f64], q: f64) -> Option<(f64, f64)> {
     let xq2 = w1 * x[n - nq] + w2 * x[n - nq - 1];
 
     Some((xq1, xq2))
+}
+
+///C COMPARISION OF TWO MEANS: (GAUSSIAN DIFFERENCE TEST).
+///C INPUT: TWO GAUSSIAN DATA POINTS, MEAN VALUES AND ERROR BARS.
+///C OUPUT: LIKELIHOOD Q  THAT THE DISCREPANCY IS DUE TO CHANCE.
+pub fn gaudif(xm1: f64, eb1: f64, xm2: f64, eb2: f64) -> f64 {
+    let sigma = (eb1.powi(2) + eb2.powi(2)).sqrt();
+    let xx = (xm1 - xm2).abs() / (sigma * 2.0f64.sqrt());
+    1.0 - gamma::error_f(xx)
 }
