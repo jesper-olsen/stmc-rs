@@ -1,4 +1,5 @@
-use marsaglia_rs::{qtiles, Marsaglia};
+use marsaglia_rs::marsaglia::Marsaglia;
+use marsaglia_rs::qtiles;
 
 fn main() {
     println!();

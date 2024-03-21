@@ -1,4 +1,4 @@
-use marsaglia_rs::Marsaglia;
+use marsaglia_rs::marsaglia::Marsaglia;
 
 fn frequency_test() {
     let p = 0.4;

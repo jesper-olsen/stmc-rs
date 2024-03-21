@@ -1,4 +1,4 @@
-use marsaglia_rs::Marsaglia;
+use marsaglia_rs::marsaglia::Marsaglia;
 use std::f64::consts::PI;
 
 fn main() {

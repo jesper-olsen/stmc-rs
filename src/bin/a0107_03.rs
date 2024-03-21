@@ -1,33 +1,6 @@
-use marsaglia_rs::Marsaglia;
+use marsaglia_rs::marsaglia::Marsaglia;
 use std::f64::consts::PI;
-
-// C LN OF GAMMA FUNCTION ALA LANCZOS, SIAM Num. Anal. B1 (1964) 1.
-fn gamma_ln(x: f64) -> f64 {
-    const C1_L: f64 = 76.18009173;
-    const C2_L: f64 = -86.50532033;
-    const C3_L: f64 = 24.01409822;
-    const C4_L: f64 = -1.231739516;
-    const C5_L: f64 = 0.120858003e-2;
-    const C6_L: f64 = -0.536382e-5;
-    const STP_L: f64 = 2.50662827465;
-
-    if x <= 0.0 {
-        panic!("GAMMA_LN: Argument X = {}", x);
-    }
-    let y = if x > 1.0 {
-        x // Full accuracy of Lanczos formula.
-    } else {
-        1.0 + x // Use Gamma(z+1)=z*Gamma(z).
-    };
-    let ser = ((1.0 + C1_L / y) + C2_L / (y + 1.0)) + C3_L / (y + 2.0);
-    let ser = ((ser + C4_L / (y + 3.0)) + C5_L / (y + 4.0)) + C6_L / (y + 5.0);
-    let gamma_ln = (y - 0.5) * (y + 4.5).ln() - (y + 4.5) + (STP_L * ser).ln();
-    if x > 1.0 {
-        gamma_ln
-    } else {
-        gamma_ln - x.ln()
-    }
-}
+use marsaglia_rs::gamma::gamma_ln;
 
 fn gamma_ln_test() {
     // ln(1), ln(1), ln(2) => 0.0, 0.0, 0.693 ...

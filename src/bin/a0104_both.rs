@@ -1,4 +1,4 @@
-use marsaglia_rs::Marsaglia;
+use marsaglia_rs::marsaglia::Marsaglia;
 use ndarray::Array1;
 use plotters::prelude::*;
 use statrs::function::erf::erf;

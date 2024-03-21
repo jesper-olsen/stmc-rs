@@ -1,4 +1,4 @@
-use marsaglia_rs::Marsaglia;
+use marsaglia_rs::marsaglia::Marsaglia;
 
 fn steb1(data: &[f64], w: &mut [f64]) -> (f64, f64) {
     //C  INPUT:   ARRAY X (GAUSSIAN) DATA AND WEIGHT FACTORS.

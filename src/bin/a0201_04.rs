@@ -1,4 +1,4 @@
-use marsaglia_rs::Marsaglia;
+use marsaglia_rs::marsaglia::Marsaglia;
 
 fn steb0(data: &[f64]) -> (f64, f64) {
     let xm = data.iter().sum::<f64>() / data.len() as f64;
