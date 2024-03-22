@@ -1,5 +1,6 @@
 use std::io;
 
+pub mod chi2;
 pub mod gamma;
 pub mod marsaglia;
 pub mod plot;
