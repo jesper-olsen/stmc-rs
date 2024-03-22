@@ -41,7 +41,7 @@ fn uniform_histogram() {
 
     let xmin = 0.0;
     let xmax = 1.0;
-    plot::plot("fig1_2.png", "Normalised Histograms", "x", "H", graphs, xmin, xmax, ymax);
+    plot("fig1_2.png", "Normalised Histograms", "x", "H", graphs, xmin, xmax, ymax);
 }
 
 fn main() {
