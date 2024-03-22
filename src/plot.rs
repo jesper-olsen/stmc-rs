@@ -27,7 +27,6 @@ pub fn plot(
         .draw()
         .unwrap();
 
-
     graphs.into_iter().enumerate().for_each(|(i, (label, h))| {
         let colour = match i {
             0 => RED,

@@ -57,7 +57,7 @@ fn to_hist(normalise: bool, hist: &mut [f64], data: &[f64], xmin: f64, xmax: f64
         );
     }
 
-    if normalise {
+    if normalise && n > 0 {
         let delta = (xmax - xmin) / (hist.len() as f64);
         for e in hist.iter_mut() {
             *e *= 1.0 / n as f64 / delta;

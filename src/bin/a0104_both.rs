@@ -1,10 +1,10 @@
-use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::gamma::error_f;
+use marsaglia_rs::marsaglia::Marsaglia;
+use marsaglia_rs::plot;
 use ndarray::Array1;
 use plotters::prelude::*;
 use std::collections::HashMap;
 use std::f64::consts::PI;
-use marsaglia_rs::plot;
 
 fn gaussian_histogram() {
     let mut rng = Marsaglia::new(12, 34, 56, 78);
@@ -43,24 +43,36 @@ fn gaussian_histogram() {
         v.push((x + dx, y));
     }
 
-    let dgaussian: Vec<(f64,f64)> = (-30..=30)
+    let dgaussian: Vec<(f64, f64)> = (-30..=30)
         .map(|x| x as f64 / 10.0)
-        .map(|x| (x, gauss_pdf(x, 0.0, 1.0))).collect();
+        .map(|x| (x, gauss_pdf(x, 0.0, 1.0)))
+        .collect();
 
-    let dcauchy: Vec<(f64,f64)> = (-30..=30)
+    let dcauchy: Vec<(f64, f64)> = (-30..=30)
         .map(|x| x as f64 / 10.0)
-        .map(|x| (x, cauchy_pdf(x, 0.0, 1.0))).collect();
+        .map(|x| (x, cauchy_pdf(x, 0.0, 1.0)))
+        .collect();
 
-    let duniform: Vec<(f64,f64)> = (-30..=30)
+    let duniform: Vec<(f64, f64)> = (-30..=30)
         .map(|x| x as f64 / 10.0)
-        .map(|x| (x, uniform_pdf(x, -1.0, 1.0))).collect();
+        .map(|x| (x, uniform_pdf(x, -1.0, 1.0)))
+        .collect();
 
-    plot::plot("fig1_4.png", "Histogram", "x", "f", vec![
-           (String::from("Histogram CDF"), v.clone()),
-           (String::from("Gaussian CDF"), dgaussian),
-           (String::from("Cauchy CDF"), dcauchy),
-           (String::from("Uniform"), duniform),
-      ], -3.0, 3.0, ymax);
+    plot::plot(
+        "fig1_4.png",
+        "Histogram",
+        "x",
+        "f",
+        vec![
+            (String::from("Histogram CDF"), v.clone()),
+            (String::from("Gaussian CDF"), dgaussian),
+            (String::from("Cauchy CDF"), dcauchy),
+            (String::from("Uniform"), duniform),
+        ],
+        -3.0,
+        3.0,
+        ymax,
+    );
 }
 
 fn gauss_pdf(x: f64, mean: f64, std_dev: f64) -> f64 {
@@ -69,7 +81,7 @@ fn gauss_pdf(x: f64, mean: f64, std_dev: f64) -> f64 {
     coefficient * exponent.exp()
 }
 
-fn gauss_cdf(x:f64) -> f64 {
+fn gauss_cdf(x: f64) -> f64 {
     //0.5 * (1.0 + erf(x / (2.0f64.sqrt())))
     0.5 * (1.0 + error_f(x / (2.0f64.sqrt())))
 }
