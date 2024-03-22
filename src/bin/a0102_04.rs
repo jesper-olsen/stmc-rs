@@ -1,5 +1,5 @@
 use marsaglia_rs::marsaglia::Marsaglia;
-use plotters::prelude::*;
+use marsaglia_rs::plot::plot;
 use std::collections::HashMap;
 
 fn uniform_histogram() {
@@ -38,49 +38,10 @@ fn uniform_histogram() {
         }
         graphs.push((format!("{m}"), v));
     }
-    plot("fig1_2.png", graphs, ymax + 0.1);
-}
 
-// reproduces fig 1.2 p. 14
-fn plot(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
-    println!("Saving plot: {fname}");
-    let root_area = BitMapBackend::new(fname, (600, 400)).into_drawing_area();
-    root_area.fill(&WHITE).unwrap();
-
-    let mut ctx = ChartBuilder::on(&root_area)
-        .set_label_area_size(LabelAreaPosition::Left, 40)
-        .set_label_area_size(LabelAreaPosition::Bottom, 40)
-        .caption("Normalised Histograms", ("sans-serif", 40))
-        .build_cartesian_2d(0f64..1f64, 0f64..ymax)
-        .unwrap();
-
-    ctx.configure_mesh().x_desc("x").y_desc("H").draw().unwrap();
-
-    graphs.into_iter().enumerate().for_each(|(i, (label, h))| {
-        let colour = match i {
-            0 => RED,
-            _ => BLUE,
-        };
-        ctx.draw_series(
-            AreaSeries::new(
-                h,
-                0.0,             // Baseline
-                colour.mix(0.2), // Make the series opac
-            )
-            .border_style(colour), // Make a brighter border
-        )
-        .unwrap()
-        .label(label)
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
-    });
-
-    ctx.configure_series_labels()
-        .border_style(BLACK)
-        .background_style(WHITE.mix(0.8))
-        .position(SeriesLabelPosition::UpperRight)
-        .margin(20)
-        .draw()
-        .unwrap();
+    let xmin = 0.0;
+    let xmax = 1.0;
+    plot::plot("fig1_2.png", "Normalised Histograms", "x", "H", graphs, xmin, xmax, ymax);
 }
 
 fn main() {

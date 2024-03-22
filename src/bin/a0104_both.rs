@@ -1,9 +1,10 @@
 use marsaglia_rs::marsaglia::Marsaglia;
+use marsaglia_rs::gamma::error_f;
 use ndarray::Array1;
 use plotters::prelude::*;
-use statrs::function::erf::erf;
 use std::collections::HashMap;
 use std::f64::consts::PI;
+use marsaglia_rs::plot;
 
 fn gaussian_histogram() {
     let mut rng = Marsaglia::new(12, 34, 56, 78);
@@ -41,17 +42,36 @@ fn gaussian_histogram() {
         v.push((x, y));
         v.push((x + dx, y));
     }
-    plot1(
-        "fig1_4.png",
-        vec![(String::from("Histogram"), v)],
-        ymax + 0.1,
-    );
+
+    let dgaussian: Vec<(f64,f64)> = (-30..=30)
+        .map(|x| x as f64 / 10.0)
+        .map(|x| (x, gauss_pdf(x, 0.0, 1.0))).collect();
+
+    let dcauchy: Vec<(f64,f64)> = (-30..=30)
+        .map(|x| x as f64 / 10.0)
+        .map(|x| (x, cauchy_pdf(x, 0.0, 1.0))).collect();
+
+    let duniform: Vec<(f64,f64)> = (-30..=30)
+        .map(|x| x as f64 / 10.0)
+        .map(|x| (x, uniform_pdf(x, -1.0, 1.0))).collect();
+
+    plot::plot("fig1_4.png", "Histogram", "x", "f", vec![
+           (String::from("Histogram CDF"), v.clone()),
+           (String::from("Gaussian CDF"), dgaussian),
+           (String::from("Cauchy CDF"), dcauchy),
+           (String::from("Uniform"), duniform),
+      ], -3.0, 3.0, ymax);
 }
 
-fn gaussian_pdf(x: f64, mean: f64, std_dev: f64) -> f64 {
+fn gauss_pdf(x: f64, mean: f64, std_dev: f64) -> f64 {
     let exponent = -((x - mean) * (x - mean)) / (2.0 * std_dev * std_dev);
     let coefficient = 1.0 / (std_dev * (2.0 * PI).sqrt());
     coefficient * exponent.exp()
+}
+
+fn gauss_cdf(x:f64) -> f64 {
+    //0.5 * (1.0 + erf(x / (2.0f64.sqrt())))
+    0.5 * (1.0 + error_f(x / (2.0f64.sqrt())))
 }
 
 fn cauchy_pdf(x: f64, x0: f64, gamma: f64) -> f64 {
@@ -80,76 +100,6 @@ fn uniform_cdf(x: f64, x0: f64, x1: f64) -> f64 {
     }
 }
 
-// reporduces fig1.4 p.25
-fn plot1(fname: &str, graphs: Vec<(String, Vec<(f64, f64)>)>, ymax: f64) {
-    println!("Saving {fname}");
-    let root_area = BitMapBackend::new(fname, (600, 400)).into_drawing_area();
-    root_area.fill(&WHITE).unwrap();
-
-    let mut ctx = ChartBuilder::on(&root_area)
-        .set_label_area_size(LabelAreaPosition::Left, 40)
-        .set_label_area_size(LabelAreaPosition::Bottom, 40)
-        .caption("Probability Densities", ("sans-serif", 40))
-        .build_cartesian_2d(-3f64..3f64, 0f64..ymax)
-        .unwrap();
-
-    ctx.configure_mesh().x_desc("x").y_desc("f").draw().unwrap();
-
-    graphs.into_iter().enumerate().for_each(|(i, (label, h))| {
-        let colour = match i {
-            0 => RED,
-            _ => BLUE,
-        };
-        ctx.draw_series(
-            AreaSeries::new(
-                h,
-                0.0,             // Baseline
-                colour.mix(0.2), // Make the series opac
-            )
-            .border_style(colour), // Make a brighter border
-        )
-        .unwrap()
-        .label(label)
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
-    });
-
-    let data = (-30..=30)
-        .map(|x| x as f64 / 10.0)
-        .map(|x| (x, gaussian_pdf(x, 0.0, 1.0)));
-
-    let colour = Palette99::pick(2).mix(0.9);
-    ctx.draw_series(LineSeries::new(data, &colour))
-        .unwrap()
-        .label("Gaussian")
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
-
-    let data = (-30..=30)
-        .map(|x| x as f64 / 10.0)
-        .map(|x| (x, cauchy_pdf(x, 0.0, 1.0)));
-    let colour = Palette99::pick(3).mix(0.9);
-    ctx.draw_series(LineSeries::new(data, &colour))
-        .unwrap()
-        .label("Cauchy")
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
-
-    let data = (-30..=30)
-        .map(|x| x as f64 / 10.0)
-        .map(|x| (x, uniform_pdf(x, -1.0, 1.0)));
-    let colour = Palette99::pick(4).mix(0.9);
-    ctx.draw_series(LineSeries::new(data, &colour))
-        .unwrap()
-        .label("Uniform")
-        .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], colour));
-
-    ctx.configure_series_labels()
-        .border_style(BLACK)
-        .background_style(WHITE.mix(0.8))
-        .position(SeriesLabelPosition::UpperRight)
-        .margin(20)
-        .draw()
-        .unwrap();
-}
-
 // reproduces fig 1.5 p. 26
 fn plot2(fname: &str) {
     println!("Saving {fname}");
@@ -157,7 +107,7 @@ fn plot2(fname: &str) {
     let x: Array1<f64> = Array1::linspace(-3.0, 3.0, 1000);
 
     // Calculate CDFs
-    let gauss_cdf = x.map(|x| 0.5 * (1.0 + erf(x / (2.0f64.sqrt()))));
+    let gauss_cdf = x.map(|x| gauss_cdf(*x));
     let cau_cdf = x.map(|x| cauchy_cdf(*x, 0.0, 1.0));
     let uni_cdf = x.map(|x| uniform_cdf(*x, -1.0, 1.0));
 
@@ -223,5 +173,6 @@ fn plot2(fname: &str) {
 
 fn main() {
     gaussian_histogram();
+
     plot2("fig1_5.png");
 }

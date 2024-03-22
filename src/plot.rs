@@ -18,7 +18,6 @@ pub fn plot(
         .set_label_area_size(LabelAreaPosition::Left, 40)
         .set_label_area_size(LabelAreaPosition::Bottom, 40)
         .caption(caption, ("sans-serif", 40))
-        //.build_cartesian_2d(-3f64..3f64, 0f64..ymax)
         .build_cartesian_2d(xmin..xmax, 0f64..ymax)
         .unwrap();
 
@@ -28,11 +27,20 @@ pub fn plot(
         .draw()
         .unwrap();
 
+
     graphs.into_iter().enumerate().for_each(|(i, (label, h))| {
         let colour = match i {
             0 => RED,
-            _ => BLUE,
+            1 => BLUE,
+            2 => GREEN,
+            _ => YELLOW,
         };
+
+        //TODO: generalise LineSeries, AreaSeries
+        //.draw_series(LineSeries::new(
+        //    x.iter().cloned().zip(uni_cdf.iter().cloned()),
+        //    GREEN,
+        //))
         ctx.draw_series(
             AreaSeries::new(
                 h,
