@@ -1,4 +1,4 @@
-use crate::gamma::{gamma_p,gamma_ln};
+use crate::gamma::{gamma_ln, gamma_p};
 
 pub fn chi2_df(chi2: f64, nf: usize) -> f64 {
     let a = 0.5 * nf as f64;
@@ -16,20 +16,19 @@ pub fn chi2pdf_pd(chi2: f64, nf: usize) -> f64 {
     let a = 0.5 * nf as f64;
     let aln = a.ln();
     let cln = chi2.ln();
-    let yln =aln -a*chi2+(a-1.0)*(aln+cln)-gamma_ln(a);
+    let yln = aln - a * chi2 + (a - 1.0) * (aln + cln) - gamma_ln(a);
     yln.exp()
 }
-
 
 /// peaked distribution function.
 pub fn chi2pdf_qdf(chi2: f64, nf: usize) -> f64 {
     let a = 0.5 * nf as f64;
     let x = a * chi2;
-    let g = gamma_p(a,x);
-    if g<=0.5 {
+    let g = gamma_p(a, x);
+    if g <= 0.5 {
         g
     } else {
-        1.0-g
+        1.0 - g
     }
 }
 

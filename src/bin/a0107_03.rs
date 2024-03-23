@@ -34,7 +34,7 @@ fn main() {
     let mut xmom = [0.0f64; 5];
     let mut xn = 0.0;
     for e in xmom.iter_mut().skip(1) {
-        xn+=2.0;
+        xn += 2.0;
         let g = gamma_ln(0.5 * xn + 0.5).exp();
         *e = 2.0f64.powf(0.5 * xn) * g / PI.sqrt();
     }

@@ -69,7 +69,7 @@ fn hist2graph(hist: &[f64], xmin: f64, xmax: f64) -> (Vec<(f64, f64)>, f64) {
     let mut ymax = 0.0;
     let dx = (xmax - xmin) / hist.len() as f64;
     let mut v = Vec::new();
-    for (bin,y) in hist.iter().enumerate() {
+    for (bin, y) in hist.iter().enumerate() {
         let x = bin as f64 / 10.0;
         if *y > ymax {
             ymax = *y

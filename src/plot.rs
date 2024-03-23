@@ -61,3 +61,43 @@ pub fn plot(
         .draw()
         .unwrap();
 }
+
+pub fn plot2(
+    fname: &str,
+    caption: &str,
+    x_desc: &str,
+    y_desc: &str,
+    graphs: Vec<(String, Vec<(f64, f64)>)>,
+    xmin: f64,
+    xmax: f64,
+    ymax: f64,
+) {
+    println!("Saving {fname}");
+    let root_area = BitMapBackend::new(fname, (900, 600)).into_drawing_area();
+    root_area.fill(&WHITE).unwrap();
+
+    let mut ctx = ChartBuilder::on(&root_area)
+        .set_label_area_size(LabelAreaPosition::Left, 40)
+        .set_label_area_size(LabelAreaPosition::Bottom, 40)
+        .caption(caption, ("Arial", 40))
+        .build_cartesian_2d(xmin..xmax, 0f64..ymax)
+        .unwrap();
+
+    ctx.configure_mesh()
+        .x_desc(x_desc)
+        .y_desc(y_desc)
+        .draw()
+        .unwrap();
+
+    graphs.into_iter().enumerate().for_each(|(i, (label, h))| {
+        ctx.draw_series(
+            LineSeries::new(h, BLACK), //AreaSeries::new(
+                                       //    h,
+                                       //    0.0,             // Baseline
+                                       //    colour.mix(0.2), // Make the series opac
+                                       //)
+                                       //.border_style(colour), // Make a brighter border
+        )
+        .unwrap();
+    });
+}

@@ -92,10 +92,10 @@ pub fn gamma_p(a: f64, x: f64) -> f64 {
 }
 
 pub fn error_f(x: f64) -> f64 {
-    let g=gamma_p(0.5, x.powi(2));
+    let g = gamma_p(0.5, x.powi(2));
     match x {
-        x if x>0.0 => g,
-        x if x<0.0 => -g,
+        x if x > 0.0 => g,
+        x if x < 0.0 => -g,
         _ => 0.0,
     }
 }
