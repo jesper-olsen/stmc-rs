@@ -23,15 +23,14 @@ fn main() {
 
     println!("\n Fractiles for the CHI2 distribution\n");
     print!("   N \\ q ");
-    for n in 0..q.len() {
-        print!(" {: >8.3}  ", q[n]);
+    for qn in q.iter() {
+        print!(" {: >8.3}  ", qn);
     }
     println!("\n");
     for n in 1..=NMAX {
         print!("   {n}     ");
-        for i in 0..q.len() {
-            let xq = chi2_xq(q[i], n);
-            print!(" {: >8.3}  ", xq);
+        for e in &q {
+            print!(" {: >8.3}  ", chi2_xq(*e, n));
         }
         println!();
     }
@@ -46,23 +45,21 @@ fn main() {
         let chi2 = i as f64 / 4.0;
         print!("   {chi2:1.2}    ");
         for n in 0..NMAX {
-            let f = chi2pdf_df(chi2, n + 1);
-            print!(" {:2.3} ", f);
+            print!(" {:2.3} ", chi2pdf_df(chi2, n + 1));
         }
         println!();
     }
 
     println!("\n Fractiles for the CHI2 per degree of freedom distribution\n");
     print!("   N \\ q ");
-    for n in 0..q.len() {
-        print!(" {: >8.3}  ", q[n]);
+    for qn in &q {
+        print!(" {: >8.3}  ", qn);
     }
     println!("\n");
     for n in 1..=NMAX {
         print!("   {n}     ");
-        for i in 0..q.len() {
-            let xq = chi2pdf_xq(q[i], n);
-            print!(" {: >8.3}  ", xq);
+        for v in &q {
+            print!(" {: >8.3}  ", chi2pdf_xq(*v, n));
         }
         println!();
     }
