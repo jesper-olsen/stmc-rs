@@ -98,7 +98,7 @@ impl Marsaglia {
 
 #[cfg(test)]
 mod tests {
-    use crate::Marsaglia;
+    use crate::marsaglia::Marsaglia;
     #[test]
     fn it_works() {
         let mut rng = Marsaglia::new(12, 34, 56, 78);

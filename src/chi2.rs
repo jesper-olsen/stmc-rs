@@ -18,7 +18,6 @@ pub fn chi2pdf_xq(q: f64, nf: usize) -> f64 {
 
 pub fn chi2_xq(q: f64, nf: usize) -> f64 {
     let x1 = 0.0;
-    let q1 = chi2_df(x1, nf);
     let mut x2 = 0.0;
     loop {
         x2 += nf as f64;
@@ -27,7 +26,6 @@ pub fn chi2_xq(q: f64, nf: usize) -> f64 {
             break;
         }
     }
-    let q2 = chi2_df(x2, nf);
     let f = |x: f64| chi2_df(x, nf);
     fi1(f, q, x1, x2)
 }
@@ -43,27 +41,25 @@ where
 {
     let eps = 1.0 / 10f64.powi(8);
     const ITERMAX: usize = 1000;
-    let mut i = 0;
 
-    let mut xx1 = x1;
-    let mut xx2 = x2;
-    let mut y1 = f(xx1);
-    let mut y2 = f(xx2);
+    let mut x1 = x1;
+    let mut x2 = x2;
+    let mut y1 = f(x1);
+    let mut y2 = f(x2);
     if y1 > y2 {
-        (xx1, xx2, y1, y2) = (xx2, xx1, y2, y1);
+        (x1, x2, y1, y2) = (x2, x1, y2, y1);
     }
 
     if y >= y1 && y <= y2 {
         for _ in 0..ITERMAX {
-            let xx = 0.5 * (xx1 + xx2);
-            let ff = f(xx);
-            if ff <= y {
-                xx1 = xx;
+            let x = 0.5 * (x1 + x2);
+            if f(x) <= y {
+                x1 = x;
             } else {
-                xx2 = xx;
+                x2 = x;
             }
-            if (xx2 - xx1).abs() <= eps {
-                return 0.5 * (xx2 + xx1);
+            if (x2 - x1).abs() <= eps {
+                return 0.5 * (x2 + x1);
             }
         }
     }

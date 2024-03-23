@@ -92,12 +92,11 @@ pub fn gamma_p(a: f64, x: f64) -> f64 {
 }
 
 pub fn error_f(x: f64) -> f64 {
-    let sign = if x > 0.0 {
-        1.0
+    if x > 0.0 {
+        gamma_p(0.5, x.powi(2)) 
     } else if x < 0.0 {
-        -1.0
+        -gamma_p(0.5, x.powi(2)) 
     } else {
         0.0
-    };
-    sign * gamma_p(0.5, x.powi(2))
+    } 
 }

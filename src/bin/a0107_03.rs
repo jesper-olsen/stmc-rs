@@ -32,11 +32,13 @@ fn main() {
     }
 
     let mut xmom = [0.0f64; 5];
-    for i in 1..5 {
-        let xn = 2.0f64 * (i as f64);
+    let mut xn = 0.0;
+    for e in xmom.iter_mut().skip(1) {
+        xn+=2.0;
         let g = gamma_ln(0.5 * xn + 0.5).exp();
-        xmom[i] = 2.0f64.powf(0.5 * xn) * g / PI.sqrt();
+        *e = 2.0f64.powf(0.5 * xn) * g / PI.sqrt();
     }
+
     println!(
         "     EXACT: {:12.4} {:7.4} {:10.4} {:10.4} {:10.4}",
         xmom[0], xmom[1], xmom[2], xmom[3], xmom[4]
