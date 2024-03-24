@@ -1,7 +1,7 @@
 use crate::gamma::gamma_ln;
 
 pub fn beta(a: f64, b: f64) -> f64 {
-    (gamma_ln(a) + gamma_ln(b) + gamma_ln(a + b)).exp()
+    (gamma_ln(a) + gamma_ln(b) - gamma_ln(a + b)).exp()
 }
 
 ///Incomplete beta function
