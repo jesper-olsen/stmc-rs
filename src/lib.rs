@@ -4,11 +4,11 @@ use std::io;
 pub mod beta;
 pub mod chi2;
 pub mod gamma;
+pub mod gau;
 pub mod marsaglia;
 pub mod plot;
 pub mod steb;
 pub mod student;
-pub mod gau; 
 
 fn get_input() -> String {
     let mut s = String::new();

@@ -1,7 +1,7 @@
+use marsaglia_rs::gau::{gau_df, gau_pd};
 use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::plot;
 use marsaglia_rs::{cauchy_cdf, cauchy_pdf, uniform_cdf, uniform_pdf};
-use marsaglia_rs::gau::{gau_df, gau_pd};
 use ndarray::Array1;
 use plotters::prelude::*;
 use std::collections::HashMap;
