@@ -1,4 +1,4 @@
-use marsaglia_rs::gauss_cdf;
+use marsaglia_rs::gau::gau_df;
 use marsaglia_rs::student::{stud_df, stud_xq};
 
 ///  STUDENT DISTRIBUTION: CONFIDENCE LEVELS FOR SMALL GAUSSIAN SAMPLES.
@@ -28,7 +28,7 @@ fn main() {
     print!("\n INFINITY ");
     for j in 1..=NSI {
         let t = -1.0 * j as f64;
-        let p = 1.0 - 2.0 * gauss_cdf(t);
+        let p = 1.0 - 2.0 * gau_df(t);
         print!("{p:11.5} ");
     }
     println!();
@@ -36,7 +36,7 @@ fn main() {
     println!("\n   Table 2)\n");
     print!("    N \\ P ");
     for i in 1..=NSI {
-        let p = 1.0 - 2.0 * gauss_cdf(-1.0 * i as f64);
+        let p = 1.0 - 2.0 * gau_df(-1.0 * i as f64);
         print!("{:11.5} ", p);
     }
 
@@ -49,7 +49,7 @@ fn main() {
         print!("{i:9} ");
         for j in 1..=nj {
             let xj = j as f64;
-            let p = 1.0 - gauss_cdf(-xj);
+            let p = 1.0 - gau_df(-xj);
             let s = stud_xq(p, nf);
             print!("{s:11.5} ");
         }

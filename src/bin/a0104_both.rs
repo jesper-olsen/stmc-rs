@@ -1,6 +1,7 @@
 use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::plot;
-use marsaglia_rs::{cauchy_cdf, cauchy_pdf, gauss_cdf, gauss_pdf, uniform_cdf, uniform_pdf};
+use marsaglia_rs::{cauchy_cdf, cauchy_pdf, uniform_cdf, uniform_pdf};
+use marsaglia_rs::gau::{gau_df, gau_pd};
 use ndarray::Array1;
 use plotters::prelude::*;
 use std::collections::HashMap;
@@ -44,7 +45,7 @@ fn gaussian_histogram() {
 
     let dgaussian: Vec<(f64, f64)> = (-30..=30)
         .map(|x| x as f64 / 10.0)
-        .map(|x| (x, gauss_pdf(x, 0.0, 1.0)))
+        .map(|x| (x, gau_pd(x, 0.0, 1.0)))
         .collect();
 
     let dcauchy: Vec<(f64, f64)> = (-30..=30)
@@ -81,7 +82,7 @@ fn plot2(fname: &str) {
     let x: Array1<f64> = Array1::linspace(-3.0, 3.0, 1000);
 
     // Calculate CDFs
-    let gauss_cdf = x.map(|x| gauss_cdf(*x));
+    let gauss_cdf = x.map(|x| gau_df(*x));
     let cau_cdf = x.map(|x| cauchy_cdf(*x, 0.0, 1.0));
     let uni_cdf = x.map(|x| uniform_cdf(*x, -1.0, 1.0));
 

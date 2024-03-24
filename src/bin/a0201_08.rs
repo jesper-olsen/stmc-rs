@@ -1,4 +1,4 @@
-use marsaglia_rs::gaudif;
+use marsaglia_rs::gau::gaudif;
 use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::plot::plot;
 

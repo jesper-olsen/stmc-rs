@@ -1,4 +1,4 @@
-use marsaglia_rs::gaudif;
+use marsaglia_rs::gau::gaudif;
 use marsaglia_rs::steb::steb2;
 
 const Q0CUT: f64 = 0.05;

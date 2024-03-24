@@ -1,5 +1,4 @@
-use marsaglia_rs::gauss_cdf;
-use marsaglia_rs::student::{stud_df, stud_xq};
+use marsaglia_rs::student::{stud_df};
 
 // Table 2.8 p.80
 const DATA: [(usize, usize, f64); 9] = [
