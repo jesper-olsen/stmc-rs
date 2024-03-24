@@ -1,10 +1,9 @@
-use marsaglia_rs::gamma::error_f;
 use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::plot;
+use marsaglia_rs::{cauchy_cdf, cauchy_pdf, gauss_cdf, gauss_pdf, uniform_cdf, uniform_pdf};
 use ndarray::Array1;
 use plotters::prelude::*;
 use std::collections::HashMap;
-use std::f64::consts::PI;
 
 fn gaussian_histogram() {
     let mut rng = Marsaglia::new(12, 34, 56, 78);
@@ -73,43 +72,6 @@ fn gaussian_histogram() {
         3.0,
         ymax,
     );
-}
-
-fn gauss_pdf(x: f64, mean: f64, std_dev: f64) -> f64 {
-    let exponent = -((x - mean) * (x - mean)) / (2.0 * std_dev * std_dev);
-    let coefficient = 1.0 / (std_dev * (2.0 * PI).sqrt());
-    coefficient * exponent.exp()
-}
-
-fn gauss_cdf(x: f64) -> f64 {
-    //0.5 * (1.0 + erf(x / (2.0f64.sqrt())))
-    0.5 * (1.0 + error_f(x / (2.0f64.sqrt())))
-}
-
-fn cauchy_pdf(x: f64, x0: f64, gamma: f64) -> f64 {
-    1.0 / (PI * gamma * (1.0 + ((x - x0) / gamma).powi(2)))
-}
-
-fn cauchy_cdf(x: f64, x0: f64, gamma: f64) -> f64 {
-    1.0 / std::f64::consts::PI * ((x - x0) / gamma).atan() + 0.5
-}
-
-fn uniform_pdf(x: f64, x0: f64, x1: f64) -> f64 {
-    if x >= x0 && x <= x1 {
-        1.0 / (x1 - x0)
-    } else {
-        0.0
-    }
-}
-
-fn uniform_cdf(x: f64, x0: f64, x1: f64) -> f64 {
-    if x < x0 {
-        0.0
-    } else if x < x1 {
-        (x - x0) / (x1 - x0)
-    } else {
-        1.0
-    }
 }
 
 // reproduces fig 1.5 p. 26

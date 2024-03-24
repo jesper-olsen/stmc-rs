@@ -89,15 +89,7 @@ pub fn plot2(
         .draw()
         .unwrap();
 
-    graphs.into_iter().enumerate().for_each(|(i, (label, h))| {
-        ctx.draw_series(
-            LineSeries::new(h, BLACK), //AreaSeries::new(
-                                       //    h,
-                                       //    0.0,             // Baseline
-                                       //    colour.mix(0.2), // Make the series opac
-                                       //)
-                                       //.border_style(colour), // Make a brighter border
-        )
-        .unwrap();
+    graphs.into_iter().for_each(|(_, h)| {
+        ctx.draw_series(LineSeries::new(h, BLACK)).unwrap();
     });
 }

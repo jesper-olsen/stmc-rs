@@ -1,10 +1,13 @@
+use std::f64::consts::PI;
 use std::io;
 
+pub mod beta;
 pub mod chi2;
 pub mod gamma;
 pub mod marsaglia;
 pub mod plot;
 pub mod steb;
+pub mod student;
 
 fn get_input() -> String {
     let mut s = String::new();
@@ -48,4 +51,41 @@ pub fn gaudif(xm1: f64, eb1: f64, xm2: f64, eb2: f64) -> f64 {
     let sigma = (eb1.powi(2) + eb2.powi(2)).sqrt();
     let xx = (xm1 - xm2).abs() / (sigma * 2.0f64.sqrt());
     1.0 - gamma::error_f(xx)
+}
+
+pub fn gauss_pdf(x: f64, mean: f64, std_dev: f64) -> f64 {
+    let exponent = -((x - mean) * (x - mean)) / (2.0 * std_dev * std_dev);
+    let coefficient = 1.0 / (std_dev * (2.0 * PI).sqrt());
+    coefficient * exponent.exp()
+}
+
+pub fn gauss_cdf(x: f64) -> f64 {
+    //0.5 * (1.0 + erf(x / (2.0f64.sqrt())))
+    0.5 * (1.0 + gamma::error_f(x / (2.0f64.sqrt())))
+}
+
+pub fn cauchy_pdf(x: f64, x0: f64, gamma: f64) -> f64 {
+    1.0 / (PI * gamma * (1.0 + ((x - x0) / gamma).powi(2)))
+}
+
+pub fn cauchy_cdf(x: f64, x0: f64, gamma: f64) -> f64 {
+    1.0 / std::f64::consts::PI * ((x - x0) / gamma).atan() + 0.5
+}
+
+pub fn uniform_pdf(x: f64, x0: f64, x1: f64) -> f64 {
+    if x >= x0 && x <= x1 {
+        1.0 / (x1 - x0)
+    } else {
+        0.0
+    }
+}
+
+pub fn uniform_cdf(x: f64, x0: f64, x1: f64) -> f64 {
+    if x < x0 {
+        0.0
+    } else if x < x1 {
+        (x - x0) / (x1 - x0)
+    } else {
+        1.0
+    }
 }

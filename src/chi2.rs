@@ -55,7 +55,7 @@ pub fn chi2_xq(q: f64, nf: usize) -> f64 {
 ///C PRECISSION: EPS=1/10**8 can be changed, see below.
 ///C METHOD:     BISECTING INTERVAL, INITIAL RANGE [X1,X2] (X1<X2).
 ///C ASSUMPTION: F(X) MONOTON (IN- OR DECREASING) IN THE INTERVAL [X1,X2].
-fn fi1<F>(f: F, y: f64, x1: f64, x2: f64) -> f64
+pub fn fi1<F>(f: F, y: f64, x1: f64, x2: f64) -> f64
 where
     F: Fn(f64) -> f64,
 {
