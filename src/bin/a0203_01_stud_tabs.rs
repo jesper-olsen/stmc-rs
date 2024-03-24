@@ -18,7 +18,7 @@ fn main() {
         let nf = i - 1;
         print!("{i:9} ");
         for j in 1..=NSI {
-            let t=-1.0 * j as f64;
+            let t = -1.0 * j as f64;
             let p = 1.0 - 2.0 * stud_df(t, nf);
             print!("{p:11.5} ");
         }
@@ -27,7 +27,7 @@ fn main() {
 
     print!("\n INFINITY ");
     for j in 1..=NSI {
-        let t=-1.0 * j as f64;
+        let t = -1.0 * j as f64;
         let p = 1.0 - 2.0 * gauss_cdf(t);
         print!("{p:11.5} ");
     }
@@ -36,25 +36,21 @@ fn main() {
     println!("\n   Table 2)\n");
     print!("    N \\ P ");
     for i in 1..=NSI {
-        let p=1.0-2.0*gauss_cdf(-1.0*i as f64);
+        let p = 1.0 - 2.0 * gauss_cdf(-1.0 * i as f64);
         print!("{:11.5} ", p);
     }
 
     println!("\n");
 
     for i in 2..=MDAT {
-        let nf = i-1;
-        let nj = if i==2 {
-            4
-        } else {
-            NSI 
-        }; 
-        
+        let nf = i - 1;
+        let nj = if i == 2 { 4 } else { NSI };
+
         print!("{i:9} ");
         for j in 1..=nj {
             let xj = j as f64;
-            let p=1.0-gauss_cdf(-xj);
-            let s=stud_xq(p, nf);
+            let p = 1.0 - gauss_cdf(-xj);
+            let s = stud_xq(p, nf);
             print!("{s:11.5} ");
         }
         println!();
@@ -66,5 +62,4 @@ fn main() {
         print!("{p:11.5} ");
     }
     println!();
-
 }
