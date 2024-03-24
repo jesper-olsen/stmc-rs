@@ -39,14 +39,14 @@ pub fn stud_xq(q: f64, nf: usize) -> f64 {
     if q > 0.5 {
         loop {
             x2 += 1.0;
-            if stud_df(x2, nf) <= q {
+            if stud_df(x2, nf) > q {
                 break;
             }
         }
     } else {
         loop {
             x1 -= 1.0;
-            if stud_df(x1, nf) >= q {
+            if stud_df(x1, nf) < q {
                 break;
             }
         }
