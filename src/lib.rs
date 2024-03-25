@@ -1,5 +1,5 @@
 use std::f64::consts::PI;
-use std::io;
+use std::io::{self, Write};
 
 pub mod beta;
 pub mod chi2;
@@ -9,6 +9,7 @@ pub mod marsaglia;
 pub mod plot;
 pub mod steb;
 pub mod student;
+pub mod f;
 
 fn get_input() -> String {
     let mut s = String::new();
@@ -16,15 +17,35 @@ fn get_input() -> String {
     String::from(s.trim())
 }
 
-pub fn get_float(msg: &str) -> f64 {
+pub fn get_number<T: std::str::FromStr>(msg: &str) -> T {
     loop {
         println!("{msg}");
         let input: String = get_input();
-        if let Ok(num) = input.trim().parse::<f64>() {
+        if let Ok(num) = input.trim().parse::<T>() {
             return num;
         } else {
-            println!("Invalid input. Please enter a valid floating-point number.");
+            println!("Invalid input. Please enter a valid number.");
         };
+    }
+}
+
+pub fn yes(q: &str, y: &str, n: &str) -> bool {
+    loop {
+        print!("{q}\n** ");
+        let _ = io::stdout().flush();
+        if let Some(c) = get_input().chars().next() {
+            match c {
+                'Y' | 'y' => {
+                    println!("{y}");
+                    return true;
+                }
+                'N' | 'n' => {
+                    println!("{n}");
+                    return false;
+                }
+                _ => println!(" Please answer Yes or No."),
+            }
+        }
     }
 }
 
