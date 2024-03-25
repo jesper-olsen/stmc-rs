@@ -10,7 +10,7 @@ pub fn beta_i(x: f64, a: f64, b: f64) -> f64 {
     const ITER_MAX: usize = 200;
 
     assert!(
-        x >= 0.0 && x <= 1.0,
+        (0.0..=1.0).contains(&x),
         "beta_i: Value is not within the range [0.0, 1.0]"
     );
     let bt = if x == 0.0 || x == 1.0 {

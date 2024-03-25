@@ -1,6 +1,8 @@
 use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::steb::{steb0, steb2};
 
+// Reproduces Table 2.1 p. 83
+
 // DISASTER WITH SMALL BIN SIZES. AVERAGES WEIGHTED WITH ONE OVER
 // THEIR ESTIMATED VARIANCE. RESULTS FOR MEAN VALUES AND ERROR BARS.
 
@@ -15,7 +17,6 @@ fn main() {
     let mut wght = [0.0; NDAT];
     let mut xm = [0.0; KMAX + 1];
     let mut xe = [0.0; KMAX + 1];
-    let mut kdat = [0; KMAX];
 
     let mut rng = Marsaglia::new(12, 34, 56, 78);
 
@@ -26,14 +27,13 @@ fn main() {
     (xm[0], xe[0]) = steb0(&dat0);
 
     for k in 0..KMAX {
-        for i in (1..=NDAT).step_by(JDAT[k]) {
-            let j = 1 + i / JDAT[k];
-            let z = i - 1;
-            (dat2[j - 1], eb[j - 1]) = steb0(&dat0[z..z + JDAT[k]]);
+        for i in (0..NDAT).step_by(JDAT[k]) {
+            let j = (i + 1) / JDAT[k];
+            (dat2[j], eb[j]) = steb0(&dat0[i..i + JDAT[k]]);
         }
         wght[0] = -1.0;
-        kdat[k] = NDAT / JDAT[k];
-        (xm[k + 1], xe[k + 1]) = steb2(&dat2[0..kdat[k]], &eb[0..kdat[k]], &mut wght[0..kdat[k]]);
+        let kdat = NDAT / JDAT[k];
+        (xm[k + 1], xe[k + 1]) = steb2(&dat2[0..kdat], &eb[0..kdat], &mut wght[0..kdat]);
     }
 
     print!("\nBinsize:       ");
@@ -42,8 +42,8 @@ fn main() {
     }
 
     print!("\nData:    {NDAT} ");
-    for e in kdat {
-        print!(" {:6} ", e);
+    for e in JDAT {
+        print!(" {:6} ", NDAT / e);
     }
 
     print!("\nMeans: ");
