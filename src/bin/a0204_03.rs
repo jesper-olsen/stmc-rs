@@ -6,7 +6,7 @@ use marsaglia_rs::steb::{steb0, steb2};
 
 const NDAT: usize = 19200;
 const KMAX: usize = 6;
-const JDAT: [usize;KMAX] = [2,3,4,8,16,32];
+const JDAT: [usize; KMAX] = [2, 3, 4, 8, 16, 32];
 
 fn main() {
     let mut dat0 = [0.0; NDAT];
@@ -23,18 +23,17 @@ fn main() {
         *e = rng.uni();
     }
 
-    (xm[0],xe[0]) = steb0(&dat0);
+    (xm[0], xe[0]) = steb0(&dat0);
 
-    for k in 1..=KMAX {
-        for i in (1..=NDAT).step_by(JDAT[k-1]) {
-            let j =  1+ i / JDAT[k-1];
-            //(dat2[j],eb[j]) = steb0(&dat0[0..JDAT[k]]);
-            let z = i-1;
-            (dat2[j-1],eb[j-1]) = steb0(&dat0[z..z+JDAT[k-1]]);
+    for k in 0..KMAX {
+        for i in (1..=NDAT).step_by(JDAT[k]) {
+            let j = 1 + i / JDAT[k];
+            let z = i - 1;
+            (dat2[j - 1], eb[j - 1]) = steb0(&dat0[z..z + JDAT[k]]);
         }
         wght[0] = -1.0;
-        kdat[k-1] = NDAT / JDAT[k-1];
-        (xm[k],xe[k]) = steb2(&dat2[0..kdat[k-1]], &eb[0..kdat[k-1]], &mut wght[0..kdat[k-1]]);
+        kdat[k] = NDAT / JDAT[k];
+        (xm[k + 1], xe[k + 1]) = steb2(&dat2[0..kdat[k]], &eb[0..kdat[k]], &mut wght[0..kdat[k]]);
     }
 
     print!("\nBinsize:       ");
@@ -57,5 +56,4 @@ fn main() {
         print!(" {e:1.4} ");
     }
     println!();
- 
 }
