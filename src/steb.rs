@@ -61,9 +61,6 @@ pub fn steb2(data: &[f64], eb: &[f64], w: &mut [f64]) -> (f64, f64) {
         for (w, e) in w.iter_mut().zip(eb.iter()) {
             *w = 1.0 / (*e).powi(2);
         }
-        //for i in 0..w.len() {
-        //w[i] = 1.0 / eb[i].powi(2);
-        //}
     }
 
     let wnorm: f64 = w.iter().sum();

@@ -70,7 +70,7 @@ pub fn sebar_e_as(n: usize, pc: f64) -> (f64, f64) {
         gau_xq(0.5 * (1.0 + pc))
     };
     let d = sdv / (2.0 * (n - 1) as f64).sqrt();
-    (1.0+d, 1.0 - d)
+    (1.0 + d, 1.0 - d)
 }
 
 //ERROR BAR FOR THE GAUSSIAN ERROR BAR.
