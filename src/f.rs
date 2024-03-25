@@ -55,7 +55,7 @@ pub fn f_qdf(f: f64, nf1: u32, nf2: u32) -> f64 {
 }
 
 pub fn f_xq(q: f64, nf1: u32, nf2: u32) -> f64 {
-    if q > 0.5 {
+    if q == 0.5 {
         1.0
     } else {
         let x1;
