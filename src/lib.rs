@@ -3,13 +3,13 @@ use std::io::{self, Write};
 
 pub mod beta;
 pub mod chi2;
+pub mod f;
 pub mod gamma;
 pub mod gau;
 pub mod marsaglia;
 pub mod plot;
 pub mod steb;
 pub mod student;
-pub mod f;
 
 fn get_input() -> String {
     let mut s = String::new();

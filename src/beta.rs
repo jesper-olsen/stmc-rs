@@ -45,7 +45,8 @@ pub fn beta_i(x: f64, a: f64, b: f64) -> f64 {
         bm = bp / bpp;
         bcf = (bcfp + c2 * bcf) / bpp;
         bz = 1.0;
-        if (bcf - bcfold) < EPS * bcf.abs() {
+
+        if (bcf - bcfold).abs() < EPS * bcf.abs() {
             return if x < (a + 1.0) / (a + b + 2.0) {
                 bt * bcf / a
             } else {

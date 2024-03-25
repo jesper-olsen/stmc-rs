@@ -1,5 +1,5 @@
-use marsaglia_rs::get_float;
 use marsaglia_rs::gau::gaudif;
+use marsaglia_rs::get_number;
 
 fn main() {
     println!("DIFFERENCE TEST: COMPARISON OF TWO MEANS.");
