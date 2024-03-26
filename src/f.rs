@@ -27,13 +27,13 @@ pub fn ftest(eb1: f64, eb2: f64, ndat1: u32, ndat2: u32) -> f64 {
     }
 }
 
-//C VARIANCE RATIO PROBABILITY DENSITY
+// VARIANCE RATIO PROBABILITY DENSITY
 pub fn f_pd(f: f64, nf1: u32, nf2: u32) -> f64 {
     let f1h = 0.5 * nf1 as f64;
     let f2h = 0.5 * nf2 as f64;
     let y = f1h * f / f2h;
     let fh = f1h + f2h;
-    f1h * -(gamma_ln(f1h) - gamma_ln(f2h) + gamma_ln(fh)).exp()
+    f1h * (-gamma_ln(f1h) - gamma_ln(f2h) + gamma_ln(fh)).exp()
         * y.powf(f1h - 1.0)
         * (y + 1.0).powf(-fh)
         / f2h
