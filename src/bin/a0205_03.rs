@@ -21,7 +21,7 @@ fn calc_table() -> Vec<f64> {
     let mut v = Vec::new();
     for k2 in -4..=4isize {
         let expo = kdat as isize + k2;
-        let nda2 = 2u32.pow(expo as u32) as u32;
+        let nda2 = 2u32.pow(expo as u32);
         let nf2 = nda2 - 1;
         let fdo2 = 1.0 / f_xq(p2, nf1, nf2);
         let fdo1 = 1.0 / f_xq(p1, nf1, nf2);

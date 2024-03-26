@@ -1,11 +1,12 @@
-use std::f64::consts::PI;
 use std::io::{self, Write};
 
 pub mod beta;
+pub mod cau;
 pub mod chi2;
 pub mod f;
 pub mod gamma;
 pub mod gau;
+pub mod kolm;
 pub mod marsaglia;
 pub mod plot;
 pub mod steb;
@@ -64,14 +65,6 @@ pub fn qtiles(x: &[f64], q: f64) -> Option<(f64, f64)> {
     let xq2 = w1 * x[n - nq] + w2 * x[n - nq - 1];
 
     Some((xq1, xq2))
-}
-
-pub fn cauchy_pdf(x: f64, x0: f64, gamma: f64) -> f64 {
-    1.0 / (PI * gamma * (1.0 + ((x - x0) / gamma).powi(2)))
-}
-
-pub fn cauchy_cdf(x: f64, x0: f64, gamma: f64) -> f64 {
-    1.0 / std::f64::consts::PI * ((x - x0) / gamma).atan() + 0.5
 }
 
 pub fn uniform_pdf(x: f64, x0: f64, x1: f64) -> f64 {
