@@ -51,3 +51,31 @@ pub fn kolm1(fxct: &[f64]) -> (f64, f64, f64, f64) {
     }
     (del1, del2, q1, q2)
 }
+
+// Asymptotic two-sided Kolmogorov test in the form of
+// M.A. Stephens, J. Royal Stat. Soc. B 32 (1970) 115.
+pub fn kolm2_as(fxct: &[f64]) -> (f64, f64) {
+    let mut del = 0.0f64;
+    let n = fxct.len();
+    for i in 0..n {
+        let femp = i as f64 / n as f64;
+        del = del.max(fxct[i] - femp);
+        let femp = (i + 1) as f64 / n as f64;
+        del = del.max(femp - fxct[i]);
+    }
+    let sqn = (n as f64).sqrt();
+    let a = -2.0 * (sqn * del + (12.0 * del) / 100.0 + (11.0 * del) / (100.0 * sqn)).powi(2);
+    let mut sign_two = 2.0;
+    let mut q = 0.0f64;
+    let mut cut = 0.0;
+    for j in 1..=100 {
+        let add = sign_two * (a * (j as i32).pow(2) as f64).exp();
+        q += add;
+        if add.abs() < cut {
+            return (del, q);
+        }
+        sign_two = -sign_two;
+        cut = add.abs() / 1000.0;
+    }
+    (del, 1.0)
+}

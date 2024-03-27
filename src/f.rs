@@ -45,7 +45,7 @@ pub fn f_qdf(f: f64, nf1: u32, nf2: u32) -> f64 {
     let nf2 = nf2 as f64;
     let xf1h = 0.5 * nf1;
     let xf2h = 0.5 * nf2;
-    let x = nf2 as f64 / (nf1 * f + nf2);
+    let x = nf2 / (nf1 * f + nf2);
     let f_qdf = 1.0 - beta_i(x, xf2h, xf1h);
     if f_qdf > 0.5 {
         1.0 - f_qdf
