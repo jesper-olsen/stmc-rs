@@ -1,17 +1,21 @@
 use marsaglia_rs::cau::cau_df;
-use marsaglia_rs::kolm::{kolm1,kolm1_as};
+use marsaglia_rs::gau::gau_df;
+use marsaglia_rs::kolm::{kolm1, kolm1_as};
 use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::plot::plot2;
 
 // Statistical investigation of the 1-sided Kolmogorov test.
-// Examples: Uniform, Gaussian and Cauchy random numbers.
+// Examples: Uniform, Gaussian and Cauchy random numbers.f
 
 fn main() {
+    a020604(true);
+    a020604(false);
+}
+
+fn a020604(part1: bool) {
     //const N: usize = 5;
     const N: usize = 1000;
     const NRPT: usize = 10_000;
-    let part1 = false;
-    let part1 = true;
     let mut data = [0.0; N];
     let mut fxct = [0.0; N];
     let mut q1 = [0.0f64; NRPT];
@@ -21,13 +25,17 @@ fn main() {
 
     for irpt in 0..NRPT {
         for e in data.iter_mut() {
+            //*e = rng.uniform();
+            //*e = rng.gauss();
             *e = rng.cauchy();
         }
         if N > 1 {
             data.sort_by(|a, b| a.partial_cmp(b).unwrap());
         }
         for i in 0..data.len() {
-            fxct[i]=cau_df(data[i])
+            //fxct[i]=data[i];       // uniform
+            //fxct[i]=gau_df(data[i]);
+            fxct[i] = cau_df(data[i])
         }
         if part1 {
             (_, _, q1[irpt], q2[irpt]) = kolm1(&fxct);
@@ -55,9 +63,9 @@ fn main() {
             "{:11.5}{:11.5}{:11.5}{f:11.5}",
             q1[irpt], q2[irpt], q3[irpt]
         );
-        v1.push((q1[irpt],f));
-        v2.push((q2[irpt],f));
-        v3.push((q3[irpt],f));
+        v1.push((q1[irpt], f));
+        v2.push((q2[irpt], f));
+        v3.push((q3[irpt], f));
     }
 
     graphs.push((String::new(), v1));
@@ -65,8 +73,12 @@ fn main() {
     graphs.push((String::new(), v3));
 
     plot2(
-        if part1 {"fig_a0206_04a.png"} else {"fig_a0206_04b.png"}, 
-        if part1 {"kolm1"} else {"kolm1_as"}, // title 
+        if part1 {
+            "fig_a0206_04a.png"
+        } else {
+            "fig_a0206_04b.png"
+        },
+        if part1 { "kolm1" } else { "kolm1_as" }, // title
         "x",
         "y",
         graphs,
@@ -74,5 +86,4 @@ fn main() {
         1.0,
         0.5,
     );
-
 }

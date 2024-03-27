@@ -55,29 +55,29 @@ pub fn kolm1(fxct: &[f64]) -> (f64, f64, f64, f64) {
 //Asymptotic one-sided Kolmogorov tests, implementing Smirnov's
 //equation, see van der Waerden, Mathematical Statistics, Springer 1969.
 pub fn kolm1_as(fxct: &[f64]) -> (f64, f64, f64, f64) {
-    let mut eps1=0.0;
-    let mut eps2=0.0;
-    let mut q1=0.0;
-    let mut q2=0.0;
+    let mut eps1 = 0.0;
+    let mut eps2 = 0.0;
+    let mut q1 = 0.0;
+    let mut q2 = 0.0;
     for j in 1..=2 {
         let mut eps = 0.0f64;
-        if j==1 {
+        if j == 1 {
             for i in 0..fxct.len() {
-                let femp=i as f64/fxct.len() as f64;
-                eps=eps.max(fxct[i]-femp); 
+                let femp = i as f64 / fxct.len() as f64;
+                eps = eps.max(fxct[i] - femp);
             }
-            eps1=eps;
-            q1 =(-2.0*fxct.len() as f64 * eps.powi(2)).exp()
+            eps1 = eps;
+            q1 = (-2.0 * fxct.len() as f64 * eps.powi(2)).exp()
         } else {
             for i in 0..fxct.len() {
-                let femp=(i+1) as f64/fxct.len() as f64;
-                eps=eps.max(femp-fxct[i]); 
+                let femp = (i + 1) as f64 / fxct.len() as f64;
+                eps = eps.max(femp - fxct[i]);
             }
-            eps2=eps;
-            q2 =(-2.0*fxct.len() as f64 * eps.powi(2)).exp()
+            eps2 = eps;
+            q2 = (-2.0 * fxct.len() as f64 * eps.powi(2)).exp()
         }
     }
-    (eps1,eps2,q1,q2)
+    (eps1, eps2, q1, q2)
 }
 
 // Asymptotic two-sided Kolmogorov test in the form of
