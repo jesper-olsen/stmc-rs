@@ -42,12 +42,12 @@ fn main() {
     let mut v = Vec::new();
 
     for irpt in 0..NRPT {
-        let mut f = (irpt+1) as f64 / (NRPT + 1) as f64;
+        let mut f = (irpt + 1) as f64 / (NRPT + 1) as f64;
         if f > 0.5 {
             f = 1.0 - f;
         }
         //println!("{:11.5} {f:11.5}", q[irpt]);
-        v.push((q[irpt],f));
+        v.push((q[irpt], f));
     }
     graphs.push((String::new(), v));
 
