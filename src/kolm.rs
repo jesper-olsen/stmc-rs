@@ -108,12 +108,7 @@ pub fn kolm2_as(fxct: &[f64]) -> (f64, f64) {
     (del, 1.0)
 }
 
-/// Asymptotic two-sided Kolmogorov test for two data sets.
-/// See kolm2_as for further comments.
-pub fn kolm2_as2(dat1: &[f64], dat2: &[f64]) -> (f64, f64) {
-    let n1 = dat1.len();
-    let n2 = dat2.len();
-
+fn calc_del(dat1: &[f64], dat2: &[f64]) -> f64 {
     let mut femp1 = 0.0;
     let mut femp2 = 0.0;
     let mut del = 0.0f64;
@@ -121,23 +116,32 @@ pub fn kolm2_as2(dat1: &[f64], dat2: &[f64]) -> (f64, f64) {
     let mut i2 = 0;
     loop {
         if dat1[i1] < dat2[i2] {
-            femp1 = (i1 + 1) as f64 / n1 as f64;
+            femp1 = (i1 + 1) as f64 / dat1.len() as f64;
             i1 += 1;
         } else if dat1[i1] == dat2[i2] {
-            femp1 = (i1 + 1) as f64 / n1 as f64;
-            femp2 = (i2 + 1) as f64 / n2 as f64;
+            femp1 = (i1 + 1) as f64 / dat1.len() as f64;
+            femp2 = (i2 + 1) as f64 / dat2.len() as f64;
             i1 += 1;
             i2 += 1;
         } else {
-            femp2 = (i2 + 1) as f64 / n2 as f64;
+            femp2 = (i2 + 1) as f64 / dat2.len() as f64;
             i2 += 1;
         }
         del = del.max((femp1 - femp2).abs());
-        if i1 >= n1 || i2 >= n2 {
-            break;
+        if i1 >= dat1.len() || i2 >= dat2.len() {
+            return del;
         }
     }
+}
 
+
+/// Asymptotic two-sided Kolmogorov test for two data sets.
+/// See kolm2_as for further comments.
+pub fn kolm2_as2(dat1: &[f64], dat2: &[f64]) -> (f64, f64) {
+    let n1 = dat1.len();
+    let n2 = dat2.len();
+
+    let del = calc_del(dat1, dat2);
     // Effective number of data N1*N2/(N1+N2).
     let sqn = ((n1 * n2) as f64 / (n1 + n2) as f64).sqrt();
     let a = -2.0 * (sqn * del + (12.0 * del) / 100.0 + (11.0 * del) / (100.0 * sqn)).powi(2);
@@ -154,4 +158,9 @@ pub fn kolm2_as2(dat1: &[f64], dat2: &[f64]) -> (f64, f64) {
         cut = add.abs() / 1000.0
     }
     (del, 1.0)
+}
+
+pub fn kolm2_del2(dat1: &[f64], dat2: &[f64]) -> f64 {
+    assert!(dat2.len()>=dat1.len(), "kolm2: dat2 must be at least as long as dat1");
+    calc_del(dat1, dat2)
 }
