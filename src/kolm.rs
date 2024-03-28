@@ -134,7 +134,6 @@ fn calc_del(dat1: &[f64], dat2: &[f64]) -> f64 {
     }
 }
 
-
 /// Asymptotic two-sided Kolmogorov test for two data sets.
 /// See kolm2_as for further comments.
 pub fn kolm2_as2(dat1: &[f64], dat2: &[f64]) -> (f64, f64) {
@@ -161,6 +160,9 @@ pub fn kolm2_as2(dat1: &[f64], dat2: &[f64]) -> (f64, f64) {
 }
 
 pub fn kolm2_del2(dat1: &[f64], dat2: &[f64]) -> f64 {
-    assert!(dat2.len()>=dat1.len(), "kolm2: dat2 must be at least as long as dat1");
+    assert!(
+        dat2.len() >= dat1.len(),
+        "kolm2: dat2 must be at least as long as dat1"
+    );
     calc_del(dat1, dat2)
 }
