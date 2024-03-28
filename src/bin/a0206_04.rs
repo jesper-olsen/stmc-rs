@@ -22,20 +22,35 @@ fn a020604(part1: bool) {
     let mut q2 = [0.0f64; NRPT];
     let mut q3 = [0.0f64; NRPT];
     let mut rng = Marsaglia::new(12, 34, 56, 78);
+    let distribution = 1;
+
+    println!(
+        "{} random numbers.",
+        match distribution {
+            1 => "Cauchy",
+            2 => "Gauss",
+            _ => "Uniform",
+        }
+    );
 
     for irpt in 0..NRPT {
         for e in data.iter_mut() {
-            //*e = rng.uniform();
-            //*e = rng.gauss();
-            *e = rng.cauchy();
+            *e = match distribution {
+                1 => rng.cauchy(),
+                2 => rng.gauss(),
+                _ => rng.uni(),
+            }
         }
+
         if N > 1 {
             data.sort_by(|a, b| a.partial_cmp(b).unwrap());
         }
         for i in 0..data.len() {
-            //fxct[i]=data[i];       // uniform
-            //fxct[i]=gau_df(data[i]);
-            fxct[i] = cau_df(data[i])
+            fxct[i] = match distribution {
+                1 => cau_df(data[i]),
+                2 => gau_df(data[i]),
+                _ => data[i], // uniform
+            }
         }
         if part1 {
             (_, _, q1[irpt], q2[irpt]) = kolm1(&fxct);
