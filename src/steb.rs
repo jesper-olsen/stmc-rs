@@ -118,7 +118,7 @@ pub fn stebj0(fj: &[f64]) -> (f64, f64, f64) {
 pub fn stebj1(fj: &[f64], fmean: f64) -> (f64, f64, f64, f64) {
     assert!(fj.len() >= 2, "stebj1: fj too small!");
     let (fjm, fv, fe) = stebj0(fj);
-    let (fmm, biasm) = bias(fj, fmean);
+    let (fmm, _biasm) = bias(fj, fmean);
     (fjm, fmm, fv, fe)
 }
 
@@ -126,8 +126,19 @@ pub fn stebj1(fj: &[f64], fmean: f64) -> (f64, f64, f64, f64) {
 // THE BIAS-CORRECTED MEAN VALUE  XMM  FROM THE FOLLOWING
 // INPUT:  XJ(N) JACKKNIFE BINS AND
 //         XM    MEAN VALUE FROM ENTIRE STATISTICS.
-fn bias(xj: &[f64], xm: f64) -> (f64, f64) {
+pub fn bias(xj: &[f64], xm: f64) -> (f64, f64) {
     let xjm = xj.iter().sum::<f64>() / xj.len() as f64;
     let biasm = (xj.len() - 1) as f64 * (xm - xjm);
     (xm + biasm, biasm)
+}
+
+// CALCULATION OF  N  JACKKNIFE BINS  XJ(N)  FOR  N  DATA IN  X(N).
+pub fn datjack(x: &[f64], xj: &mut [f64]) {
+    let xsum = x.iter().sum::<f64>();
+    for (e, f) in xj.iter_mut().zip(x.iter()) {
+        *e = (xsum - *f) / (x.len() - 1) as f64;
+    }
+    //for i in 0..x.len() {
+    //    xj[i]=(xsum-x[i])/(x.len()-1) as f64;
+    //}
 }

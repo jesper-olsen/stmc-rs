@@ -3,7 +3,6 @@ use std::io::{self, Write};
 pub mod beta;
 pub mod cau;
 pub mod chi2;
-pub mod datjack;
 pub mod f;
 pub mod gamma;
 pub mod gau;

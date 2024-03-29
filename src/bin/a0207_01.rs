@@ -1,7 +1,6 @@
-use marsaglia_rs::datjack::datjack;
 use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::plot::plot2;
-use marsaglia_rs::steb::{steb0, stebj0, stebj1};
+use marsaglia_rs::steb::{datjack, steb0, stebj0, stebj1};
 
 fn main() {
     jack_eb();
