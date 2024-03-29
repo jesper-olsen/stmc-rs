@@ -2,7 +2,6 @@ use marsaglia_rs::marsaglia::Marsaglia;
 use marsaglia_rs::plot::plot2;
 use marsaglia_rs::steb::{bias, datjack, steb0, stebj0};
 
-// Copyright, Bernd Berg, Oct 31, 2000.
 // VARIANCE EXAMPLE FOR DOUBLE JACKKNIFE BIAS CORRECTED
 // ESTIMATORS (Berg, Comp. Phys. 69 (92) 7-14).
 
@@ -52,7 +51,12 @@ fn bias_var() -> (f64,f64) {
             datjj2[i1][i2] = datjj[i1][i2].powi(2);
         }
     }
-    let (datmm2, _, error) = stebjj1(&datjj2, &datj2, &mut datj2mm);
+
+    //stebjj1
+    for i in 0..datj2.len() {
+        (datj2mm[i], _) = bias(&datjj2[i], datj2[i]);
+    }
+    let (datmm2,_,error)=stebj0(&datj2mm);
 
     println!(" SECOND LEVEL");
     println!(" BIAS-CORRECTED JACKKNIFE ESTIMATOR: {datmm2} +/- {error}");
@@ -78,28 +82,12 @@ fn datjack2(x: &[f64; N], xjj: &mut [[f64; N1]; N]) {
     }
 }
 
-// CALCULATION OF JACKKNIFE ESTIMATORS FROM INPUT OF SECOND
-// FJJ(N-1,N)  AND FIRST  FJ(N)  LEVEL JACKKNIFE BINS:
-//
-// - THE JACKKNIFE SAMPLE OF BIAS CORRECTED MEAN VALUES FJMM(N),
-// - THE BIAS CORRECTED MEAN VALUE FMM,
-// - THE VARIANCE  FV  AND THE ERROR BAR  FE  FOR  THE
-//   BIAS CORRECTED MEAN VALUE.
-pub fn stebjj1(fjj: &[[f64; N1]; N], fj: &[f64; N], fjmm: &mut [f64; N]) -> (f64, f64, f64) {
-    assert!(fj.len() > 2, "stebjj1: too small");
-    assert!(fjj.len() == fj.len(), "stebjj1: mismatched dimensions");
-    for i in 0..fj.len() {
-        (fjmm[i], _) = bias(&fjj[i], fj[i]);
-    }
-    stebj0(fjmm)
-}
-
 #[cfg(test)]
 mod tests {
     use crate::bias_var;
     #[test]
-    fn bias_var() {
+    fn test_bias_var() {
         let tup = bias_var();
-        assert_eq!(bias, (0.23837126846653026 ,0.07978421694955856));
+        assert_eq!(tup, (0.23837126846653026 ,0.07978421694955856));
     }
 }
