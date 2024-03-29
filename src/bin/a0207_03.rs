@@ -34,9 +34,9 @@ fn bias_big() -> (f64, f64) {
     println!("EXACT: {}", 1.0/3.0);
     let mut rng = Marsaglia::new(12, 34, 56, 78);
 
-    for itry in 1..=NTRY {
-        if itry <= NPR {
-            println!("\nITRY = {itry}");
+    for itry in 0..NTRY {
+        if itry < NPR {
+            println!("\nITRY = {}", itry+1);
         }
         for e in dat0.iter_mut() {
             *e = rng.gauss();
@@ -49,9 +49,9 @@ fn bias_big() -> (f64, f64) {
         bining(&dat0, &mut dat2);
         let datm = data.iter().sum::<f64>() / data.len() as f64;
         let da2m = dat2.iter().sum::<f64>() / dat2.len() as f64;
-        datm2[itry - 1] = (A0 * datm.abs()).exp() / da2m;
-        if itry <= NPR {
-            println!(" BAD, BIASED ESTIMATOR FROM ALL DATA: {}", datm2[itry - 1]);
+        datm2[itry] = (A0 * datm.abs()).exp() / da2m;
+        if itry < NPR {
+            println!(" BAD, BIASED ESTIMATOR FROM ALL DATA: {}", datm2[itry]);
         }
 
         datjack(&data, &mut datj);
@@ -62,14 +62,14 @@ fn bias_big() -> (f64, f64) {
         }
 
         let error00;
-        (stup2m[itry - 1], error00) = steb0(&stup2);
+        (stup2m[itry], error00) = steb0(&stup2);
         let error01;
-        (datj2m[itry - 1], _, error01) = stebj0(&datj2);
+        (datj2m[itry], _, error01) = stebj0(&datj2);
         if itry <= NPR {
-            println!(" BAD, BIASED ESTIMATOR: {} +/- {error00}", stup2m[itry - 1]);
+            println!(" BAD, BIASED ESTIMATOR: {} +/- {error00}", stup2m[itry]);
             println!(
                 " STANDARD, BIASED JACKKNIFE ESTIMATOR: {} +/- {error01}",
-                datj2m[itry - 1]
+                datj2m[itry]
             );
         }
 
@@ -84,11 +84,11 @@ fn bias_big() -> (f64, f64) {
             (datj2mm[i], _) = bias(&datjj2[i], datj2[i]);
         }
         let error;
-        (datmm2[itry - 1], _, error) = stebj0(&datj2mm);
-        if itry <= NPR {
+        (datmm2[itry], _, error) = stebj0(&datj2mm);
+        if itry < NPR {
             println!(
                 "SECOND LEVEL BIAS-CORRECTED JACKKNIFE ESTIMATOR: {} +/- {error}",
-                datmm2[itry - 1]
+                datmm2[itry]
             );
         }
     }
