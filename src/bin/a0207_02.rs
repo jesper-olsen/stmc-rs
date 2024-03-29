@@ -12,7 +12,7 @@ fn main() {
 const N: usize = 16;
 const N1: usize = N - 1;
 
-fn bias_var() -> (f64,f64) {
+fn bias_var() -> (f64, f64) {
     let mut data = [0.0f64; N];
     let mut dat2 = [0.0f64; N];
     let mut datj = [0.0f64; N];
@@ -56,11 +56,11 @@ fn bias_var() -> (f64,f64) {
     for i in 0..datj2.len() {
         (datj2mm[i], _) = bias(&datjj2[i], datj2[i]);
     }
-    let (datmm2,_,error)=stebj0(&datj2mm);
+    let (datmm2, _, error) = stebj0(&datj2mm);
 
     println!(" SECOND LEVEL");
     println!(" BIAS-CORRECTED JACKKNIFE ESTIMATOR: {datmm2} +/- {error}");
-    (datmm2,error)
+    (datmm2, error)
 }
 
 // CALCULATION OF  SECOND LEVEL JACKKNIFE BINS  XJJ(N-1,N)
@@ -88,6 +88,6 @@ mod tests {
     #[test]
     fn test_bias_var() {
         let tup = bias_var();
-        assert_eq!(tup, (0.23837126846653026 ,0.07978421694955856));
+        assert_eq!(tup, (0.23837126846653026, 0.07978421694955856));
     }
 }
