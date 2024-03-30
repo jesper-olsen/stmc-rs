@@ -1,4 +1,5 @@
 use marsaglia_rs::gamma::gamma_p;
+use std::fmt;
 
 fn main() {
     lfit();
@@ -27,15 +28,7 @@ fn lfit() -> LFit {
     let data: Vec<(f64, f64, f64)> = DATA.iter().map(|(x, y, ey)| (*x, y * x, ey * x)).collect();
 
     let r = fit_l(&data);
-    println!("RESULTS:");
-    println!("A(1) = {} +/- {}", r.a.0, r.sga.0);
-    println!("A(2) = {} +/- {}", r.a.1, r.sga.1);
-    println!("\nCOVARIANCE MATRIX:");
-    println!("{} {}", r.cov[0][0], r.cov[0][1]);
-    println!("{} {}", r.cov[1][0], r.cov[1][1]);
-    println!("\nSTATISTICAL ANALYSIS:");
-    println!("CHI2 = {}", r.chi2);
-    println!("   Q = {}", r.q);
+    println!("{r}");
     r
 }
 
@@ -55,6 +48,20 @@ struct LFit {
     chi2: f64,
     q: f64,
     cov: [[f64; 2]; 2],
+}
+
+impl fmt::Display for LFit {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "LFit:");
+        writeln!(f, "A(1) = {} +/- {}", self.a.0, self.sga.0);
+        writeln!(f, "A(2) = {} +/- {}", self.a.1, self.sga.1);
+        writeln!(f, "\nCOVARIANCE MATRIX:");
+        writeln!(f, "{} {}", self.cov[0][0], self.cov[0][1]);
+        writeln!(f, "{} {}", self.cov[1][0], self.cov[1][1]);
+        writeln!(f, "\nSTATISTICAL ANALYSIS:");
+        writeln!(f, "CHI2 = {}", self.chi2);
+        writeln!(f, "   Q = {}", self.q)
+    }
 }
 
 fn fit_l(data: &[(f64, f64, f64)]) -> LFit {
@@ -105,7 +112,7 @@ fn fit_l(data: &[(f64, f64, f64)]) -> LFit {
 
 #[cfg(test)]
 mod tests {
-    use crate::{lfit,LFit};
+    use crate::{lfit, LFit};
     #[test]
     fn lfit_test() {
         let expected = LFit {
