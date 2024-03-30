@@ -31,12 +31,12 @@ fn bias_big() -> (f64, f64) {
     let mut datjj2 = [[0.0f64; N1]; N];
     let mut datj2mm = [0.0f64; N];
 
-    println!("EXACT: {}", 1.0/3.0);
+    println!("EXACT: {}", 1.0 / 3.0);
     let mut rng = Marsaglia::new(12, 34, 56, 78);
 
     for itry in 0..NTRY {
         if itry < NPR {
-            println!("\nITRY = {}", itry+1);
+            println!("\nITRY = {}", itry + 1);
         }
         for e in dat0.iter_mut() {
             *e = rng.gauss();
