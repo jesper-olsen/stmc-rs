@@ -4,6 +4,7 @@ pub mod beta;
 pub mod cau;
 pub mod chi2;
 pub mod f;
+pub mod fitl;
 pub mod gamma;
 pub mod gau;
 pub mod kolm;
