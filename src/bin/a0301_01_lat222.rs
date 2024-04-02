@@ -4,6 +4,7 @@ const ND: usize = 3;
 const ML: usize = 3;
 const MS: usize = ML.pow(ND as u32);
 const NLA: [usize; ND] = [2; ND];
+
 struct Lat {
     ns: usize,
     ipf: [[usize; ND]; MS],
@@ -38,8 +39,7 @@ impl Lat {
     }
 
     fn ixcor(&mut self, is: usize) {
-        let ns = NLA.iter().fold(1, |acc, x| acc * x);
-        let mut nspart = ns;
+        let mut nspart = self.ns;
         let mut js = is;
         for id in (0..ND).rev() {
             if id < ND - 1 {
@@ -67,11 +67,9 @@ fn main() {
 
     for is in 1..=lat.ns {
         lat.ixcor(is);
-        let ipf = &lat.ipf[is];
-        let ipb = &lat.ipb[is];
         println!(
             " {is:4}   {:?}       {:?}             {:?}",
-            lat.ix, ipf, ipb
+            lat.ix, &lat.ipf[is], &lat.ipb[is]
         );
     }
 }
