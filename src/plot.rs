@@ -1,5 +1,5 @@
-use plotters::prelude::*;
 use core::ops::Range;
+use plotters::prelude::*;
 
 pub fn plot(
     fname: &str,
