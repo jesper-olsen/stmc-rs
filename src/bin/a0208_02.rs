@@ -23,6 +23,7 @@ fn lfit() -> LFit {
 
     let r = fit_l(&data);
     println!("{r}");
+
     r
 }
 

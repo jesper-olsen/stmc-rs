@@ -28,7 +28,7 @@ fn lfit() -> LFit {
     let [egraph, lgraph] = fit_graph(&data, &r, -1.0);
 
     plot2(
-        "fig_a0208_01a",
+        "fig_a0208_01a.png",
         "Confidence Ellipse", // title
         "a_1",
         "a_2",
@@ -37,7 +37,7 @@ fn lfit() -> LFit {
         0.7..1.35,
     );
     plot2(
-        "fig_a0208_01b",
+        "fig_a0208_01b.png",
         "lfit", // title
         "",
         "",
