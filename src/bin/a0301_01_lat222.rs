@@ -6,9 +6,9 @@ const MS: usize = ML.pow(ND as u32);
 const NLA: [usize; ND] = [2; ND];
 struct Lat {
     ns: usize,
-    ipf: [[i32; ND]; MS],
-    ipb: [[i32; ND]; MS],
-    ix: [i32; ND],
+    ipf: [[usize; ND]; MS],
+    ipb: [[usize; ND]; MS],
+    ix: [usize; ND],
 }
 
 impl Lat {
@@ -22,40 +22,40 @@ impl Lat {
         };
         for is in 1..=ns {
             for id in 0..ND {
-                lat.ixcor(is as i32);
+                lat.ixcor(is);
                 //Forward (backward) step with periodic bounday conditions:
-                lat.ix[id] = (lat.ix[id] + 1) % NLA[id] as i32;
+                lat.ix[id] = (lat.ix[id] + 1) % NLA[id];
                 lat.ipf[is][id] = lat.calc_is();
             }
             for id in 0..ND {
-                lat.ixcor(is as i32);
+                lat.ixcor(is);
                 //Backward pointer (notice periodic boundary conditions):
-                lat.ix[id] = (lat.ix[id] - 1 + NLA[id] as i32) % NLA[id] as i32;
+                lat.ix[id] = (lat.ix[id] + NLA[id] - 1) % NLA[id];
                 lat.ipb[is][id] = lat.calc_is();
             }
         }
         lat
     }
 
-    fn ixcor(&mut self, is: i32) {
+    fn ixcor(&mut self, is: usize) {
         let ns = NLA.iter().fold(1, |acc, x| acc * x);
-        let mut nspart = ns as i32;
+        let mut nspart = ns;
         let mut js = is;
         for id in (0..ND).rev() {
             if id < ND - 1 {
-                js -= self.ix[id + 1] * nspart ;
+                js -= self.ix[id + 1] * nspart;
             }
-            nspart /= NLA[id] as i32;
+            nspart /= NLA[id];
             self.ix[id] = (js - 1) / nspart;
         }
     }
 
-    fn calc_is(&self) -> i32 {
+    fn calc_is(&self) -> usize {
         let mut is = 1;
         let mut nsa = 1;
         for (vix, vnla) in self.ix.iter().zip(NLA.iter()) {
             is += vix * nsa;
-            nsa *= *vnla as i32;
+            nsa *= *vnla;
         }
         is
     }
@@ -66,9 +66,12 @@ fn main() {
     let mut lat = Lat::new();
 
     for is in 1..=lat.ns {
-        lat.ixcor(is as i32);
+        lat.ixcor(is);
         let ipf = &lat.ipf[is];
         let ipb = &lat.ipb[is];
-        println!(" {is:4}   {:?}       {:?}             {:?}", lat.ix, ipf, ipb);
+        println!(
+            " {is:4}   {:?}       {:?}             {:?}",
+            lat.ix, ipf, ipb
+        );
     }
 }
