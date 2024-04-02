@@ -6,8 +6,8 @@ const MS: usize = ML.pow(ND as u32);
 const NLA: [usize; ND] = [2; ND];
 struct Lat {
     ns: usize,
-    ipf: [[i32; MS]; ND],
-    ipb: [[i32; MS]; ND],
+    ipf: [[i32; ND]; MS],
+    ipb: [[i32; ND]; MS],
     ix: [i32; ND],
 }
 
@@ -16,8 +16,8 @@ impl Lat {
         let ns = NLA.iter().fold(1, |acc, x| acc * x);
         let mut lat = Lat {
             ns,
-            ipf: [[0; MS]; ND],
-            ipb: [[0; MS]; ND],
+            ipf: [[0; ND]; MS],
+            ipb: [[0; ND]; MS],
             ix: [0; ND],
         };
         for is in 1..=ns {
@@ -25,13 +25,13 @@ impl Lat {
                 lat.ixcor(is as i32);
                 //Forward (backward) step with periodic bounday conditions:
                 lat.ix[id] = (lat.ix[id] + 1) % NLA[id] as i32;
-                lat.ipf[id][is] = lat.calc_is();
+                lat.ipf[is][id] = lat.calc_is();
             }
             for id in 0..ND {
                 lat.ixcor(is as i32);
                 //Backward pointer (notice periodic boundary conditions):
                 lat.ix[id] = (lat.ix[id] - 1 + NLA[id] as i32) % NLA[id] as i32;
-                lat.ipb[id][is] = lat.calc_is();
+                lat.ipb[is][id] = lat.calc_is();
             }
         }
         lat
@@ -62,12 +62,13 @@ impl Lat {
 }
 
 fn main() {
-    println!(" is   ix(1) (2) (3)   ipf(is,1) (,2) (,3)   ipb(is,1) (,2) (,3)");
+    println!("   is   ix(1) (2) (3)   ipf(is,1) (,2) (,3)   ipb(is,1) (,2) (,3)");
     let mut lat = Lat::new();
 
     for is in 1..=lat.ns {
         lat.ixcor(is as i32);
-        //println!(" {is:4} {:?} {:?} {:?}", lat.ix, lat.ipf, lat.ipb);
-        println!(" {is:4} {:?} {} {} {} {} {} {}", lat.ix, lat.ipf[0][is], lat.ipf[1][is], lat.ipf[2][is], lat.ipb[0][is], lat.ipb[1][is], lat.ipb[2][is]);
+        let ipf = &lat.ipf[is];
+        let ipb = &lat.ipb[is];
+        println!(" {is:4}   {:?}       {:?}             {:?}", lat.ix, ipf, ipb);
     }
 }
