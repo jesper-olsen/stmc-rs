@@ -1,4 +1,4 @@
-use marsaglia_rs::fitl::{fit_l, subl_1ox, LFit};
+use marsaglia_rs::fitl::{fit_l, subl_1ox, LFit, eigen_2x2};
 use marsaglia_rs::plot::{plot2};
 use std::f64::consts::PI;
 
@@ -26,48 +26,12 @@ fn lfit() -> LFit {
     let r = fit_l(&data);
     println!("{r}");
 
-    fit_lgnu(&data, &r, -1.0);
+    fit_lgnu("fig_a0208_01", &data, &r, -1.0);
     r
 }
 
-const M2X2_1: [[f64; 2]; 2] = [[1.0, 0.0], [0.0, 1.0]];
-const EPS: f64 = 1e-10;
-
-fn eigen_2x2(amat: &[[f64; 2]; 2]) -> ([f64; 2], [[f64; 2]; 2]) {
-    let phalf = -0.5 * (amat[0][0] + amat[1][1]);
-    let q = amat[0][0] * amat[1][1] - amat[0][1] * amat[1][0];
-    let arg = phalf.powi(2) - q;
-    if arg < 0.0 {
-        panic!("eigen_2x2 cannot be used; Eigenvalues are complex!");
-    }
-    let eval = [-phalf + arg.sqrt(), -phalf - arg.sqrt()];
-    let mut evct = [[0.0f64; 2]; 2];
-    for i in 0..=1 {
-        let deno0 = eval[i] - amat[0][0];
-        let deno1 = eval[i] - amat[1][1];
-        if deno0.abs() > deno1.abs() {
-            if deno0.abs() == EPS {
-                return (eval, M2X2_1);
-            } else {
-                let factor = amat[0][1] / deno0;
-                evct[1][i] = 1.0 / (1.0 + factor.powi(2)).sqrt();
-                evct[0][i] = factor * evct[1][i];
-            }
-        } else {
-            if deno1.abs() == EPS {
-                return (eval, M2X2_1);
-            } else {
-                let factor = amat[1][0] / deno1;
-                evct[0][i] = 1.0 / (1.0 + factor.powi(2)).sqrt();
-                evct[1][i] = factor * evct[0][i];
-            }
-        }
-    }
-    (eval, evct)
-}
-
 // draw confidence ellipse
-fn ellipse(xm: (f64, f64), sgxm: (f64, f64), sgym: (f64, f64), eigvs: &[[f64; 2]; 2], prob: f64) {
+fn ellipse(fname: &str, xm: (f64, f64), sgxm: (f64, f64), sgym: (f64, f64), eigvs: &[[f64; 2]; 2], prob: f64) {
     const NGNU: usize = 100;
     // 1. ELLIPSE:
     // C PROB<0: STANDARD COVARIANCE ELLIPSE WITH 39% CONFIDENCE.
@@ -110,8 +74,9 @@ fn ellipse(xm: (f64, f64), sgxm: (f64, f64), sgym: (f64, f64), eigvs: &[[f64; 2]
     ];
 
     let graphs = vec![(String::new(), v1), (String::new(), v2)];
+    let s=format!("{fname}a.png");       
     plot2(
-        "fig_a0208_01a.png",
+        s.as_str(),
         "Confidence Ellipse", // title
         "a_1",
         "a_2",
@@ -121,7 +86,7 @@ fn ellipse(xm: (f64, f64), sgxm: (f64, f64), sgym: (f64, f64), eigvs: &[[f64; 2]
     );
 }
 
-fn fit_lgnu(data: &[(f64, f64, f64)], lfit: &LFit, prob: f64) {
+fn fit_lgnu(fname: &str, data: &[(f64, f64, f64)], lfit: &LFit, prob: f64) {
     const NFIG: usize = 200;
 
     // lfit.d1
@@ -131,7 +96,7 @@ fn fit_lgnu(data: &[(f64, f64, f64)], lfit: &LFit, prob: f64) {
 
     let (covdd, eigvs) = eigen_2x2(&lfit.cov);
     let sgb = (covdd[0].sqrt(), covdd[1].sqrt());
-    ellipse(lfit.a, lfit.sga, sgb, &eigvs, prob);
+    ellipse(fname, lfit.a, lfit.sga, sgb, &eigvs, prob);
 
     // 3. INCLUDE CONFIDENCE LIMITS FOR REGRESSION LINE:
     println!("lfit.d2");
@@ -154,8 +119,9 @@ fn fit_lgnu(data: &[(f64, f64, f64)], lfit: &LFit, prob: f64) {
         v3.push((xx,yp))
     }
     let graphs = vec![(String::new(), v1), (String::new(), v2), (String::new(),v3)];
+    let s=format!("{fname}b.png");       
     plot2(
-        "fig_a0208_01b.png",
+        s.as_str(),
         "lfit", // title
         "",
         "",
