@@ -47,9 +47,8 @@ fn uniform_histogram() {
         "x",
         "H",
         graphs,
-        xmin,
-        xmax,
-        ymax,
+        xmin..xmax,
+        0.0..ymax,
     );
 }
 

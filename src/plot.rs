@@ -1,4 +1,5 @@
 use plotters::prelude::*;
+use core::ops::Range;
 
 pub fn plot(
     fname: &str,
@@ -6,9 +7,8 @@ pub fn plot(
     x_desc: &str,
     y_desc: &str,
     graphs: Vec<(String, Vec<(f64, f64)>)>,
-    xmin: f64,
-    xmax: f64,
-    ymax: f64,
+    xrange: Range<f64>,
+    yrange: Range<f64>,
 ) {
     println!("Saving {fname}");
     let root_area = BitMapBackend::new(fname, (600, 400)).into_drawing_area();
@@ -18,7 +18,7 @@ pub fn plot(
         .set_label_area_size(LabelAreaPosition::Left, 40)
         .set_label_area_size(LabelAreaPosition::Bottom, 40)
         .caption(caption, ("sans-serif", 40))
-        .build_cartesian_2d(xmin..xmax, 0f64..ymax)
+        .build_cartesian_2d(xrange, yrange)
         .unwrap();
 
     ctx.configure_mesh()
@@ -68,9 +68,8 @@ pub fn plot2(
     x_desc: &str,
     y_desc: &str,
     graphs: Vec<(String, Vec<(f64, f64)>)>,
-    xmin: f64,
-    xmax: f64,
-    ymax: f64,
+    xrange: Range<f64>,
+    yrange: Range<f64>,
 ) {
     println!("Saving {fname}");
     let root_area = BitMapBackend::new(fname, (900, 600)).into_drawing_area();
@@ -80,7 +79,7 @@ pub fn plot2(
         .set_label_area_size(LabelAreaPosition::Left, 40)
         .set_label_area_size(LabelAreaPosition::Bottom, 40)
         .caption(caption, ("Arial", 40))
-        .build_cartesian_2d(xmin..xmax, 0f64..ymax)
+        .build_cartesian_2d(xrange, yrange)
         .unwrap();
 
     ctx.configure_mesh()

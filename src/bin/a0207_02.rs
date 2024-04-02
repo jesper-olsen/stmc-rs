@@ -1,5 +1,4 @@
 use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot::plot2;
 use marsaglia_rs::steb::{bias, datjack, steb0, stebj0};
 
 // VARIANCE EXAMPLE FOR DOUBLE JACKKNIFE BIAS CORRECTED

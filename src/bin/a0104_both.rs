@@ -70,9 +70,8 @@ fn gaussian_histogram() {
             (String::from("Cauchy CDF"), dcauchy),
             (String::from("Uniform"), duniform),
         ],
-        -3.0,
-        3.0,
-        ymax,
+        -3.0..3.0,
+        0.0..ymax,
     );
 }
 

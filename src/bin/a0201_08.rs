@@ -36,7 +36,7 @@ fn main() {
         l.push((format!("{del_mean}"), v));
     }
 
-    plot("fig.png", "Histogram", "x", "f", l, xmin, xmax, ymax);
+    plot("fig.png", "Histogram", "x", "f", l, xmin..xmax, 0.0..ymax);
 }
 
 fn to_hist(normalise: bool, hist: &mut [f64], data: &[f64], xmin: f64, xmax: f64) {

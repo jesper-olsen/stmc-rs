@@ -1,5 +1,4 @@
 use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot::plot2;
 use marsaglia_rs::steb::{datjack, steb0, stebj0, stebj1};
 
 fn main() {
@@ -33,7 +32,7 @@ fn jack_eb() -> f64 {
     }
     let (xm, _, xe) = stebj0(&datj);
     println!("STEBJ0: {xm:.7} +/- {xe:.7}");
-    let (xjm, xmm2, _, xm2e) = stebj1(&datj, xmean2);
+    let (_xjm, xmm2, _, xm2e) = stebj1(&datj, xmean2);
     println!("STEBJ1: XMEAN2={xmean2:.7} +/-{xe:.7}");
     println!("STEBJ1: XMM2=  {xmm2:.7} +/-{xm2e:.7}");
     let biasm = xmean2 - xmm2;

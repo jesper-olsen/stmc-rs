@@ -94,8 +94,7 @@ fn main() {
             (String::from("Binned data"), v),
             (String::from("Normal distribution"), v2),
         ],
-        xmin,
-        xmax,
-        ymax,
+        xmin..xmax,
+        0.0..ymax,
     );
 }
