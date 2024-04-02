@@ -3,7 +3,9 @@
 const ND: usize = 3;
 const ML: usize = 3;
 const MS: usize = ML.pow(ND as u32);
-const NLA: [usize; ND] = [2; ND];
+//const NLA: [usize; ND] = [2; ND];
+const NLA: [usize; ND] = [3;ND];
+//const NLA: [usize; ND] = [2,2,4];
 
 struct Lat {
     ns: usize,
@@ -21,15 +23,15 @@ impl Lat {
             ipb: [[0; ND]; MS],
             ix: [0; ND],
         };
-        for is in 1..=ns {
+        for is in 0..ns {
             for id in 0..ND {
-                lat.ixcor(is);
+                lat.ixcor(is+1);
                 //Forward (backward) step with periodic bounday conditions:
                 lat.ix[id] = (lat.ix[id] + 1) % NLA[id];
                 lat.ipf[is][id] = lat.calc_is();
             }
             for id in 0..ND {
-                lat.ixcor(is);
+                lat.ixcor(is+1);
                 //Backward pointer (notice periodic boundary conditions):
                 lat.ix[id] = (lat.ix[id] + NLA[id] - 1) % NLA[id];
                 lat.ipb[is][id] = lat.calc_is();
@@ -65,8 +67,8 @@ fn main() {
     println!("   is   ix(1) (2) (3)   ipf(is,1) (,2) (,3)   ipb(is,1) (,2) (,3)");
     let mut lat = Lat::new();
 
-    for is in 1..=lat.ns {
-        lat.ixcor(is);
+    for is in 0..lat.ns {
+        lat.ixcor(is+1);
         println!(
             " {is:4}   {:?}       {:?}             {:?}",
             lat.ix, &lat.ipf[is], &lat.ipb[is]
