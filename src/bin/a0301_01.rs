@@ -26,13 +26,13 @@ impl Lat {
         };
         for is in 0..ns {
             for id in 0..ND {
-                lat.ixcor(is+1);
+                lat.ixcor(is + 1);
                 //Forward (backward) step with periodic bounday conditions:
                 lat.ix[id] = (lat.ix[id] + 1) % NLA[id];
                 lat.ipf[is][id] = lat.calc_is();
             }
             for id in 0..ND {
-                lat.ixcor(is+1);
+                lat.ixcor(is + 1);
                 //Backward pointer (notice periodic boundary conditions):
                 lat.ix[id] = (lat.ix[id] + NLA[id] - 1) % NLA[id];
                 lat.ipb[is][id] = lat.calc_is();
@@ -70,10 +70,13 @@ fn main() {
     let mut lat = Lat::new();
 
     for is in 0..lat.ns {
-        lat.ixcor(is+1);
+        lat.ixcor(is + 1);
         println!(
             " {:4}   {:?}       {:?}             {:?}",
-            is+1,lat.ix, &lat.ipf[is], &lat.ipb[is]
+            is + 1,
+            lat.ix,
+            &lat.ipf[is],
+            &lat.ipb[is]
         );
     }
 }
