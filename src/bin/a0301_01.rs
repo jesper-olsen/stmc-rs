@@ -1,10 +1,11 @@
 // Bookkeeping for a hypercubic 2x2x2 lattice (lat
 
 const ND: usize = 3;
+//const ND: usize = 4;
 const ML: usize = 3;
 const MS: usize = ML.pow(ND as u32);
-//const NLA: [usize; ND] = [2; ND];
-const NLA: [usize; ND] = [3;ND];
+const NLA: [usize; ND] = [2; ND];
+//const NLA: [usize; ND] = [3;ND];
 //const NLA: [usize; ND] = [2,2,4];
 
 struct Lat {
@@ -64,14 +65,15 @@ impl Lat {
 }
 
 fn main() {
+    println!("   Lattice size: {:?}\n", NLA);
     println!("   is   ix(1) (2) (3)   ipf(is,1) (,2) (,3)   ipb(is,1) (,2) (,3)");
     let mut lat = Lat::new();
 
     for is in 0..lat.ns {
         lat.ixcor(is+1);
         println!(
-            " {is:4}   {:?}       {:?}             {:?}",
-            lat.ix, &lat.ipf[is], &lat.ipb[is]
+            " {:4}   {:?}       {:?}             {:?}",
+            is+1,lat.ix, &lat.ipf[is], &lat.ipb[is]
         );
     }
 }
