@@ -20,7 +20,8 @@ pub fn gau_pd(x: f64, mean: f64, std_dev: f64) -> f64 {
 /// GAUSSIAN CUMULATIVE DISTRIBUTION FUNCTION.
 pub fn gau_df(x: f64) -> f64 {
     //0.5 *(1.0 + erf(x / (2.0f64.sqrt())))
-    0.5 * (1.0 + gamma::error_f(x / (2.0f64.sqrt())))
+    let xx = x / 2.0f64.sqrt();
+    0.5 + 0.5 * gamma::error_f(xx)
 }
 
 /// GAUSSIAN PEAKED DISTRIBUTION FUNCTION.

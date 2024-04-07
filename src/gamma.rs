@@ -47,7 +47,7 @@ pub fn gamma_p(a: f64, x: f64) -> f64 {
 
             let mut sum = 1.0 / a;
             let mut add = sum;
-            for i in 1..ITER_MAX {
+            for i in 1..=ITER_MAX {
                 add *= x / (a + i as f64);
                 sum += add;
                 if add.abs() < sum.abs() * EPS {
@@ -65,7 +65,7 @@ pub fn gamma_p(a: f64, x: f64) -> f64 {
             let mut b0 = 1.0;
             let mut a1 = x * a0 + x;
             let mut b1 = x * b0 + 1.0;
-            for i in 1..ITER_MAX {
+            for i in 2..=ITER_MAX {
                 let xiter = i as f64;
                 let xiterma = xiter - a;
                 a0 = (a1 + a0 * xiterma) / a1;
