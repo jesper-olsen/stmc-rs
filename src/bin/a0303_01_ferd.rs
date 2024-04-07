@@ -33,7 +33,7 @@ fn gff(beta: f64, gm: &mut [f64], gmpr: &mut [f64], gm2pr: &mut [f64]) {
     let sqtnh = beta.tanh().powi(2);
     gm2pr[0] = sqtnh - 1.0 / sqtnh;
     for ill in 1..=NLL {
-        c[ill - 1] = bk.cosh() * (1.0 / bk.tanh()) - (PI * ill as f64 / (NL as f64)).cos(); // TODO cosh?
+        c[ill - 1] = bk.cosh() * (1.0 / bk.tanh()) - (PI * ill as f64 / (NL as f64)).cos();
         let csq = (c[ill - 1] * c[ill - 1] - 1.0).sqrt();
         gm[ill] = (c[ill - 1] + csq).ln();
 
@@ -75,7 +75,7 @@ fn partfn(beta: f64, gm: &[f64], gmpr: &[f64], gm2pr: &[f64]) -> (f64, f64, f64,
     for i in 0..NL {
         let ipi = i + i;
         let ipip1 = i + i + 1;
-        zz1 = zz1 + gm[ipip1] * xml / 2.0 + (1.0 + (-gm[ipip1] * xml).exp()).ln();
+        zz1 += gm[ipip1] * xml / 2.0 + (1.0 + (-gm[ipip1] * xml).exp()).ln();
 
         zzp1 += gmpr[ipip1] * xml / 2.0 * (1.0 - (-gm[ipip1] * xml).exp())
             / (1.0 + (-gm[ipip1] * xml).exp());
@@ -100,16 +100,7 @@ fn partfn(beta: f64, gm: &[f64], gmpr: &[f64], gm2pr: &[f64]) -> (f64, f64, f64,
                 / (1.0 + (-gm[ipi] * xml).exp())
                 + (gmpr[ipi] * xml / (1.0 + (-gm[ipi] * xml).exp())).powi(2)
                     * (-gm[ipi] * xml).exp();
-        } else {
-            zz3 += -gm[ipi] * xml / 2.0 + (1.0 + (gm[ipi] * xml).exp()).ln();
-            zzp3 += -gmpr[ipi] * xml / 2.0 * (1.0 - (gm[ipi] * xml).exp())
-                / (1.0 + (gm[ipi] * xml).exp());
-            zzpp3 += -gm2pr[ipi] * xml / 2.0 * (1.0 - (gm[ipi] * xml).exp())
-                / (1.0 + (gm[ipi] * xml).exp())
-                + (gmpr[ipi] * xml / (1.0 + (gm[ipi] * xml).exp())).powi(2) * (gm[ipi] * xml).exp();
-        }
 
-        if gm[ipi] >= 0.0 {
             zz4 += gm[ipi] * ML as f64 / 2.0 + (1.0 - (-gm[ipi] * xml).exp()).ln();
             zzp4 += gmpr[ipi] * xml / 2.0 * (1.0 + (-gm[ipi] * xml).exp())
                 / (1.0 - (-gm[ipi] * xml).exp());
@@ -118,14 +109,18 @@ fn partfn(beta: f64, gm: &[f64], gmpr: &[f64], gm2pr: &[f64]) -> (f64, f64, f64,
                 - (gmpr[ipi] * xml / (1.0 - (-gm[ipi] * xml).exp())).powi(2)
                     * (-gm[ipi] * xml).exp();
         } else {
-            zz4 = zz4 - gm[ipi] * xml / 2.0 + (1.0 - (gm[ipi] * xml).exp()).ln();
+            zz3 += -gm[ipi] * xml / 2.0 + (1.0 + (gm[ipi] * xml).exp()).ln();
+            zzp3 += -gmpr[ipi] * xml / 2.0 * (1.0 - (gm[ipi] * xml).exp())
+                / (1.0 + (gm[ipi] * xml).exp());
+            zzpp3 += -gm2pr[ipi] * xml / 2.0 * (1.0 - (gm[ipi] * xml).exp())
+                / (1.0 + (gm[ipi] * xml).exp())
+                + (gmpr[ipi] * xml / (1.0 + (gm[ipi] * xml).exp())).powi(2) * (gm[ipi] * xml).exp();
+            zz4 += -gm[ipi] * xml / 2.0 + (1.0 - (gm[ipi] * xml).exp()).ln();
             z4sign = -z4sign;
-            zzp4 = zzp4
-                - gmpr[ipi] * xml / 2.0 * (1.0 + (gm[ipi] * xml).exp())
-                    / (1.0 - (gm[ipi] * xml).exp());
-            zzpp4 = zzpp4
-                - gm2pr[ipi] * xml / 2.0 * (1.0 + (gm[ipi] * xml).exp())
-                    / (1.0 - (gm[ipi] * xml).exp())
+            zzp4 += -gmpr[ipi] * xml / 2.0 * (1.0 + (gm[ipi] * xml).exp())
+                / (1.0 - (gm[ipi] * xml).exp());
+            zzpp4 += -gm2pr[ipi] * xml / 2.0 * (1.0 + (gm[ipi] * xml).exp())
+                / (1.0 - (gm[ipi] * xml).exp())
                 - (gmpr[ipi] * xml / (1.0 - (gm[ipi] * xml).exp())).powi(2) * (gm[ipi] * xml).exp();
         }
     }
@@ -153,12 +148,12 @@ fn partfn(beta: f64, gm: &[f64], gmpr: &[f64], gm2pr: &[f64]) -> (f64, f64, f64,
     (f, ueng, s, cht, zl)
 }
 
-fn sign(x: f64, y: f64) -> f64 {
-    if y > 0.0 {
-        x
-    } else if y < 0.0 {
-        -x
-    } else {
-        0.0
-    }
-}
+//fn sign(x: f64, y: f64) -> f64 {
+//    if y > 0.0 {
+//        x
+//    } else if y < 0.0 {
+//        -x
+//    } else {
+//        0.0
+//    }
+//}
