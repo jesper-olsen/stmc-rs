@@ -1,19 +1,10 @@
 // 2d Ising model: Energy histogram from naive sampling.
-use gnuplot::{AxesCommon, Caption, Color, Figure, PointSymbol, AutoOption};
+use gnuplot::{AutoOption, AxesCommon, Caption, Color, Figure, PointSymbol};
 use marsaglia_rs::marsaglia::Marsaglia;
 use std::fs::File;
 use std::io::Write;
 
-const NDAT: usize = 100_000;
-const ND: usize = 2;
-const ML: usize = 100;
-const MS: usize = ML.pow(ND as u32);
-const MLINK: usize = ND * MS;
-
-const NQ: usize = 2;
-const NLA: [usize; ND] = [20, 20];
-
-struct Potts {
+struct Potts<const ND: usize, const MS: usize, const NQ: usize> {
     ns: usize, // const
     ipf: [[usize; ND]; MS],
     ipb: [[usize; ND]; MS],
@@ -21,11 +12,12 @@ struct Potts {
     idel: [[usize; NQ]; NQ],
     nlink: usize,
     ix: [usize; ND],
+    nla: [usize; ND],
 }
 
-impl Potts {
-    pub fn new() -> Potts {
-        let ns = NLA.iter().fold(1, |acc, x| acc * x); //#lattice sites from edges
+impl<const ND: usize, const MS: usize, const NQ: usize> Potts<ND, MS, NQ> {
+    pub fn new(nla: [usize; ND]) -> Potts<ND, MS, NQ> {
+        let ns = nla.iter().fold(1, |acc, x| acc * x); //#lattice sites from edges
 
         let mut potts = Potts {
             ns,
@@ -35,19 +27,20 @@ impl Potts {
             idel: [[0; NQ]; NQ],
             nlink: ND * ns,
             ix: [0; ND],
+            nla,
         };
 
         for is in 0..ns {
             for id in 0..ND {
                 potts.ixcor(is + 1);
                 //Forward (backward) step with periodic bounday conditions:
-                potts.ix[id] = (potts.ix[id] + 1) % NLA[id];
+                potts.ix[id] = (potts.ix[id] + 1) % potts.nla[id];
                 potts.ipf[is][id] = potts.calc_is();
             }
             for id in 0..ND {
                 potts.ixcor(is + 1);
                 //Backward pointer (notice periodic boundary conditions):
-                potts.ix[id] = (potts.ix[id] + NLA[id] - 1) % NLA[id];
+                potts.ix[id] = (potts.ix[id] + potts.nla[id] - 1) % potts.nla[id];
                 potts.ipb[is][id] = potts.calc_is();
             }
         }
@@ -60,7 +53,7 @@ impl Potts {
     fn calc_is(&self) -> usize {
         let mut is = 1;
         let mut nsa = 1;
-        for (vix, vnla) in self.ix.iter().zip(NLA.iter()) {
+        for (vix, vnla) in self.ix.iter().zip(self.nla.iter()) {
             is += vix * nsa;
             nsa *= *vnla;
         }
@@ -74,7 +67,7 @@ impl Potts {
             if id < ND - 1 {
                 js -= self.ix[id + 1] * nspart;
             }
-            nspart /= NLA[id];
+            nspart /= self.nla[id];
             self.ix[id] = (js - 1) / nspart;
         }
     }
@@ -103,7 +96,14 @@ impl Potts {
 fn main() {
     let mut rng = Marsaglia::new(12, 34, 56, 78);
 
-    let mut potts = Potts::new();
+    const NDAT: usize = 100_000;
+    const ND: usize = 2;
+    const ML: usize = 100;
+    const MS: usize = ML.pow(ND as u32);
+    const MLINK: usize = ND * MS;
+    const NLA: [usize; ND] = [20, 20];
+    const NQ: usize = 2;
+    let mut potts: Potts<ND, MS, NQ> = Potts::new(NLA);
     let mut ha = vec![0; potts.nlink + 1];
     for idat in 1..=NDAT {
         potts.ran(&mut rng);
@@ -170,7 +170,7 @@ fn main() {
     let beta0 = 0.0;
     let mut hasum = 0.0;
     let mut act0m = 0.0;
-    for (iact,e) in ha.iter().enumerate() {
+    for (iact, e) in ha.iter().enumerate() {
         hasum += *e as f64;
         act0m += (iact * *e) as f64;
     }
@@ -217,13 +217,13 @@ fn main() {
         .set_x_range(AutoOption::Fix(0.4), AutoOption::Fix(-2.0))
         .set_y_range(AutoOption::Fix(0.0), AutoOption::Fix(6000.0))
         .set_y_label("H", &[])
-                .lines(&x, &y, &[Caption("Random Sampling"), Color("red")])
-                .y_error_bars(
-                    &x,
-                    &y,
-                    &ey,
-                    &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
-                )
+        .lines(&x, &y, &[Caption("Random Sampling"), Color("red")])
+        .y_error_bars(
+            &x,
+            &y,
+            &ey,
+            &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
+        )
         .lines(
             &x2,
             &y2,
