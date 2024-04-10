@@ -9,10 +9,8 @@ pub struct Potts<const ND: usize, const MS: usize, const NQ: usize> {
     pub nlink: usize,
     ix: [usize; ND],
     nla: [usize; ND],
-    wrat: Vec<[f64;4*ND+1]>,
+    //wrat: Vec<[f64;4*ND+1]>,
 }
-
-
 
 impl<const ND: usize, const MS: usize, const NQ: usize> Potts<ND, MS, NQ> {
     pub fn new(nla: [usize; ND]) -> Potts<ND, MS, NQ> {
@@ -95,21 +93,21 @@ impl<const ND: usize, const MS: usize, const NQ: usize> Potts<ND, MS, NQ> {
     pub fn order(&mut self, iq: usize) -> usize {
         for e in self.ista.iter_mut() {
             *e = iq;
-        }        
-        ND*self.ns
-    }
-
-    /// Initialize ratios of weights for MUCA or canonical Metropolis
-    fn wght_init(&mut self) {
-        let mut a = [0.0f64;4*ND+1];
-        for (id,e) in a.iter_mut().enumerate() {
-            let i = id as f64 - 2.0;
-            a[id] = (2.0*beta*i).exp();
         }
-        let self.wrat = vec![a;nlink];
+        ND * self.ns
     }
 
-    fn get_wrat(&self, id: i32,ilink: usize) {
-        self.wrat[ilink][2*ND+id]
-    }
+    // Initialize ratios of weights for MUCA or canonical Metropolis
+    //fn wght_init(&mut self) {
+    //    let mut a = [0.0f64;4*ND+1];
+    //    for (id,e) in a.iter_mut().enumerate() {
+    //        let i = id as f64 - 2.0;
+    //        a[id] = (2.0*beta*i).exp();
+    //    }
+    //    self.wrat = vec![a;nlink];
+    //}
+
+    //fn get_wrat(&self, id: i32,ilink: usize) {
+    //    self.wrat[ilink][2*ND+id]
+    //}
 }

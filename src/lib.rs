@@ -10,9 +10,9 @@ pub mod gau;
 pub mod kolm;
 pub mod marsaglia;
 pub mod plot;
+pub mod potts;
 pub mod steb;
 pub mod student;
-pub mod potts;
 
 fn get_input() -> String {
     let mut s = String::new();
