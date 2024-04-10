@@ -2,7 +2,7 @@ use gnuplot::{AutoOption, AxesCommon, Caption, Color, Figure, PointSymbol};
 use marsaglia_rs::fitl::{fit_graph, fit_l, LFit};
 
 fn main() {
-    lfit();
+    lfit(true);
 }
 
 // Gaussian data: x, y, error bars
@@ -15,7 +15,7 @@ static DATA: [(f64, f64, f64); 4] = [
     (3.0, 4.1, 0.5),
 ];
 
-fn lfit() -> LFit {
+fn lfit(plot: bool) -> LFit {
     let data: Vec<(f64, f64, f64)> = DATA
         .iter()
         //.map(|(x, y, ey)| subl_1ox(*x, *y, *ey))
@@ -25,45 +25,46 @@ fn lfit() -> LFit {
     let r = fit_l(&data);
     println!("{r}");
 
-    //let (egraph, [v1,v2,v3,v4]) = fit_graph(&data, &r, -1.0);
-    let ([ev1, ev2], [v1, v2, v3, v4]) = fit_graph(&data, &r, -1.0);
+    if plot {
+        let ([ev1, ev2], [v1, v2, v3, v4]) = fit_graph(&data, &r, -1.0);
 
-    let mut fg = Figure::new();
-    fg.set_title("Confidence Ellipse");
-    fg.axes2d()
-        .set_x_range(AutoOption::Fix(0.65), AutoOption::Fix(1.60))
-        .set_y_range(AutoOption::Fix(0.70), AutoOption::Fix(1.35))
-        .set_x_label("a_1", &[])
-        .set_y_label("a_2", &[])
-        .lines(
-            ev1.iter().map(|(x, _)| *x).collect::<Vec<f64>>(),
-            ev1.iter().map(|(_, y)| *y).collect::<Vec<f64>>(),
-            &[Caption("Ellipse"), Color("red")],
-        )
-        .lines(
-            ev2.iter().map(|(x, _)| *x).collect::<Vec<f64>>(),
-            ev2.iter().map(|(_, y)| *y).collect::<Vec<f64>>(),
-            &[],
-        );
-    fg.show().unwrap();
+        let mut fg = Figure::new();
+        fg.set_title("Confidence Ellipse");
+        fg.axes2d()
+            .set_x_range(AutoOption::Fix(0.65), AutoOption::Fix(1.60))
+            .set_y_range(AutoOption::Fix(0.70), AutoOption::Fix(1.35))
+            .set_x_label("a_1", &[])
+            .set_y_label("a_2", &[])
+            .lines(
+                ev1.iter().map(|(x, _)| *x).collect::<Vec<f64>>(),
+                ev1.iter().map(|(_, y)| *y).collect::<Vec<f64>>(),
+                &[Caption("Ellipse"), Color("red")],
+            )
+            .lines(
+                ev2.iter().map(|(x, _)| *x).collect::<Vec<f64>>(),
+                ev2.iter().map(|(_, y)| *y).collect::<Vec<f64>>(),
+                &[],
+            );
+        fg.show().unwrap();
 
-    let mut fg = Figure::new();
-    fg.set_title("Confidence Ellipse");
-    fg.axes2d()
-        //.set_x_range(AutoOption::Fix(0.65), AutoOption::Fix(1.60))
-        //.set_y_range(AutoOption::Fix(0.70), AutoOption::Fix(1.35))
-        .set_x_label("a_1", &[])
-        .set_y_label("a_2", &[])
-        .lines(&v1, &v2, &[Caption(r"fit+e")])
-        .lines(&v1, &v3, &[Caption(r"fit")])
-        .lines(&v1, &v4, &[Caption(r"fit-e")])
-        .y_error_bars(
-            DATA.iter().map(|(x, _, _)| *x).collect::<Vec<f64>>(),
-            DATA.iter().map(|(_, y, _)| *y).collect::<Vec<f64>>(),
-            DATA.iter().map(|(_, _, ey)| *ey).collect::<Vec<f64>>(),
-            &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
-        );
-    fg.show().unwrap();
+        let mut fg = Figure::new();
+        fg.set_title("Linear Fit");
+        fg.axes2d()
+            //.set_x_range(AutoOption::Fix(0.65), AutoOption::Fix(1.60))
+            //.set_y_range(AutoOption::Fix(0.70), AutoOption::Fix(1.35))
+            .set_x_label("x", &[])
+            .set_y_label("y", &[])
+            .lines(&v1, &v2, &[Caption(r"fit+e")])
+            .lines(&v1, &v3, &[Caption(r"fit")])
+            .lines(&v1, &v4, &[Caption(r"fit-e")])
+            .y_error_bars(
+                DATA.iter().map(|(x, _, _)| *x).collect::<Vec<f64>>(),
+                DATA.iter().map(|(_, y, _)| *y).collect::<Vec<f64>>(),
+                DATA.iter().map(|(_, _, ey)| *ey).collect::<Vec<f64>>(),
+                &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
+            );
+        fg.show().unwrap();
+    }
 
     r
 }
@@ -84,7 +85,7 @@ mod tests {
             ],
         };
 
-        let r = lfit();
+        let r = lfit(false);
         assert_eq!(r, expected);
     }
 }
