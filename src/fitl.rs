@@ -1,12 +1,6 @@
 use crate::gamma::gamma_p;
-use itertools::izip;
 use std::f64::consts::PI;
 use std::fmt;
-use std::fs::File;
-use std::io::{BufWriter, Write};
-
-const GNU: bool = false;
-//const GNU: bool = true;
 
 // LINEAR FIT: FIT OF INPUT DATA BY STRAIGHT LINE Y=A*X+B.
 //
@@ -140,7 +134,7 @@ fn ellipse(
     sgym: (f64, f64),
     eigvs: &[[f64; 2]; 2],
     prob: f64,
-) -> Vec<(String, Vec<(f64, f64)>)> {
+) -> [Vec<(f64, f64)>; 2] {
     const NPOINTS: usize = 100;
     // 1. ELLIPSE:
     // C PROB<0: STANDARD COVARIANCE ELLIPSE WITH 39% CONFIDENCE.
@@ -158,14 +152,6 @@ fn ellipse(
         let x1 = xm.0 + eigvs[0][0] * y1 + eigvs[0][1] * y2;
         let x2 = xm.1 + eigvs[1][0] * y1 + eigvs[1][1] * y2;
         v1.push((x1, x2));
-    }
-    if GNU {
-        println!("save ellipse.d1");
-        let file = File::create("ellipse.d1").unwrap();
-        let mut writer = BufWriter::new(file);
-        for (x1, x2) in v1.iter() {
-            writeln!(writer, "{x1:16.7} {x2:16.7}").unwrap();
-        }
     }
 
     //C 2. STANDARD DEVIATIONS IN ORIGNAL DIRECTIONS:
@@ -185,28 +171,16 @@ fn ellipse(
         (xm.0 - sgym.1 * eigvs[0][1], xm.1 - sgym.1 * eigvs[1][1]),
         (xm.0, xm.1),
     ];
-    if GNU {
-        println!("save ellipse.d2");
-        let file = File::create("ellipse.d2").unwrap();
-        let mut writer = BufWriter::new(file);
-        v2.iter()
-            .for_each(|(x, y)| writeln!(writer, "{x:16.7} {y:16.7}").unwrap());
-    }
 
-    vec![(String::new(), v1), (String::new(), v2)]
+    [v1, v2]
 }
 
 pub fn fit_graph(
     data: &[(f64, f64, f64)],
     lfit: &LFit,
     prob: f64,
-) -> [Vec<(String, Vec<(f64, f64)>)>; 2] {
+) -> ([Vec<(f64, f64)>; 2], [Vec<f64>; 4]) {
     const NFIG: usize = 200;
-
-    // lfit.d1
-    //for (x,y,ey) in data {
-    //    println!("{x} {y} {ey}");
-    //}
 
     let (covdd, eigvs) = eigen_2x2(&lfit.cov);
     let sgb = (covdd[0].sqrt(), covdd[1].sqrt());
@@ -216,9 +190,11 @@ pub fn fit_graph(
     let (xn, _, _) = data.last().unwrap();
     let (x0, _, _) = data.first().unwrap();
     let delx = (xn - x0) / NFIG as f64;
+
     let mut v1 = Vec::new();
     let mut v2 = Vec::new();
     let mut v3 = Vec::new();
+    let mut v4 = Vec::new();
     for i in 0..=NFIG {
         let xx = x0 + i as f64 * delx;
         let varb1 = (eigvs[0][0] + xx * eigvs[1][0]).abs().powi(2) * covdd[0];
@@ -226,28 +202,11 @@ pub fn fit_graph(
         let ym = lfit.a.0 + lfit.a.1 * xx - (varb1 + varb2).sqrt();
         let yy = lfit.a.0 + lfit.a.1 * xx;
         let yp = lfit.a.0 + lfit.a.1 * xx + (varb1 + varb2).sqrt();
-        //println!("{xx} {ym} {yy} {yp}");
-        v1.push((xx, ym));
-        v2.push((xx, yy));
-        v3.push((xx, yp));
+        v1.push(xx);
+        v2.push(ym);
+        v3.push(yy);
+        v4.push(yp);
     }
 
-    if GNU {
-        println!("save lfit.d2");
-        let file = File::create("lfit.d2").unwrap();
-        let mut writer = BufWriter::new(file);
-
-        for ((xx, ym), (_, yy), (_, yp)) in izip!(&v1, &v2, &v3) {
-            writeln!(writer, "{xx:16.7} {ym:16.7} {yy:16.7} {yp:16.7}").unwrap();
-        }
-    }
-
-    [
-        egraph,
-        vec![
-            (String::new(), v1),
-            (String::new(), v2),
-            (String::new(), v3),
-        ],
-    ]
+    (egraph, [v1, v2, v3, v4])
 }

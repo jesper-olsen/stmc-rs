@@ -1,5 +1,5 @@
+use gnuplot::{AutoOption, AxesCommon, Caption, Color, Figure, PointSymbol};
 use marsaglia_rs::fitl::{fit_graph, fit_l, LFit};
-use marsaglia_rs::plot::plot2;
 
 fn main() {
     lfit();
@@ -25,26 +25,45 @@ fn lfit() -> LFit {
     let r = fit_l(&data);
     println!("{r}");
 
-    let [egraph, lgraph] = fit_graph(&data, &r, -1.0);
+    //let (egraph, [v1,v2,v3,v4]) = fit_graph(&data, &r, -1.0);
+    let ([ev1, ev2], [v1, v2, v3, v4]) = fit_graph(&data, &r, -1.0);
 
-    plot2(
-        "fig_a0208_01a.png",
-        "Confidence Ellipse", // title
-        "a_1",
-        "a_2",
-        egraph,
-        0.65..1.6,
-        0.7..1.35,
-    );
-    plot2(
-        "fig_a0208_01b.png",
-        "lfit", // title
-        "",
-        "",
-        lgraph,
-        0.0..3.0,
-        0.0..5.0,
-    );
+    let mut fg = Figure::new();
+    fg.set_title("Confidence Ellipse");
+    fg.axes2d()
+        .set_x_range(AutoOption::Fix(0.65), AutoOption::Fix(1.60))
+        .set_y_range(AutoOption::Fix(0.70), AutoOption::Fix(1.35))
+        .set_x_label("a_1", &[])
+        .set_y_label("a_2", &[])
+        .lines(
+            ev1.iter().map(|(x, _)| *x).collect::<Vec<f64>>(),
+            ev1.iter().map(|(_, y)| *y).collect::<Vec<f64>>(),
+            &[Caption("Ellipse"), Color("red")],
+        )
+        .lines(
+            ev2.iter().map(|(x, _)| *x).collect::<Vec<f64>>(),
+            ev2.iter().map(|(_, y)| *y).collect::<Vec<f64>>(),
+            &[],
+        );
+    fg.show().unwrap();
+
+    let mut fg = Figure::new();
+    fg.set_title("Confidence Ellipse");
+    fg.axes2d()
+        //.set_x_range(AutoOption::Fix(0.65), AutoOption::Fix(1.60))
+        //.set_y_range(AutoOption::Fix(0.70), AutoOption::Fix(1.35))
+        .set_x_label("a_1", &[])
+        .set_y_label("a_2", &[])
+        .lines(&v1, &v2, &[Caption(r"fit+e")])
+        .lines(&v1, &v3, &[Caption(r"fit")])
+        .lines(&v1, &v4, &[Caption(r"fit-e")])
+        .y_error_bars(
+            DATA.iter().map(|(x, _, _)| *x).collect::<Vec<f64>>(),
+            DATA.iter().map(|(_, y, _)| *y).collect::<Vec<f64>>(),
+            DATA.iter().map(|(_, _, ey)| *ey).collect::<Vec<f64>>(),
+            &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
+        );
+    fg.show().unwrap();
 
     r
 }

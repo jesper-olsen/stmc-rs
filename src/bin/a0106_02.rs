@@ -1,6 +1,6 @@
 // EMPIRICAL DISTRIBUTION FUNCTION AND Q-DISTRIBUTION.
 
-use gnuplot::{AxesCommon, Caption, Color, Figure };
+use gnuplot::{AxesCommon, Caption, Color, Figure};
 use marsaglia_rs::marsaglia::Marsaglia;
 
 fn main() {
@@ -12,9 +12,9 @@ fn main() {
         for e in data.iter_mut() {
             *e = match title {
                 "Uniform" => rng.uni(),
-                "Gauss"  => rng.gauss(),
+                "Gauss" => rng.gauss(),
                 "Uniform2" => 2.0 * (rng.uni() - 0.5),
-                _ => unimplemented!()
+                _ => unimplemented!(),
             };
         }
         data.sort_by(|a, b| a.partial_cmp(b).unwrap());
@@ -40,7 +40,7 @@ fn main() {
         vfq.push(0.0);
 
         let mut fg = Figure::new();
-        fg.set_title( format!("Empirical F and F_q - {}", title).as_str());
+        fg.set_title(format!("Empirical F and F_q - {}", title).as_str());
         fg.axes2d()
             .set_x_label("x", &[])
             .set_y_label("F", &[])
