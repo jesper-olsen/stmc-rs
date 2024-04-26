@@ -1,7 +1,7 @@
 stmc-rs
 ==============
 
-General statistics functions and assignments from [1] - translated from Fortran [2].
+General statistics functions and assignments used in [1][2] - translated from Fortran to Rust.
 Gnuplot and Plotters used for graphing.
 
 References
