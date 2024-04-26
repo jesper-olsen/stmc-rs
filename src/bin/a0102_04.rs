@@ -1,5 +1,5 @@
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot::plot;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::plot::plot;
 use std::collections::HashMap;
 
 fn uniform_histogram() {

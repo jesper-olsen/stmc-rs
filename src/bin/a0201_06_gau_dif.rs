@@ -1,5 +1,5 @@
-use marsaglia_rs::gau::gaudif;
-use marsaglia_rs::get_number;
+use stmc_rs::gau::gaudif;
+use stmc_rs::get_number;
 
 fn main() {
     println!("DIFFERENCE TEST: COMPARISON OF TWO MEANS.");

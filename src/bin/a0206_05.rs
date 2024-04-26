@@ -1,5 +1,5 @@
-use marsaglia_rs::kolm::{kolm1, kolm2_as};
-use marsaglia_rs::marsaglia::Marsaglia;
+use stmc_rs::kolm::{kolm1, kolm2_as};
+use stmc_rs::marsaglia::Marsaglia;
 
 /// Comparision of the asymptotic 2-sided Kolmogorov test with
 /// results from the exact one sided test.

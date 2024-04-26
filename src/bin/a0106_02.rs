@@ -1,7 +1,7 @@
 // EMPIRICAL DISTRIBUTION FUNCTION AND Q-DISTRIBUTION.
 
 use gnuplot::{AxesCommon, Caption, Color, Figure};
-use marsaglia_rs::marsaglia::Marsaglia;
+use stmc_rs::marsaglia::Marsaglia;
 
 fn main() {
     const N: usize = 100;

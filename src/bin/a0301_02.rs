@@ -1,7 +1,7 @@
 // 2d Ising model: Energy histogram from naive sampling.
 use gnuplot::{AutoOption, AxesCommon, Caption, Color, Figure, PointSymbol};
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::potts::Potts;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::potts::Potts;
 use std::fs::File;
 use std::io::Write;
 

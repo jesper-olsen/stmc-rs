@@ -1,6 +1,6 @@
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::qtiles;
-use marsaglia_rs::steb::steb0;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::qtiles;
+use stmc_rs::steb::steb0;
 
 fn fractiles(q: f64) -> (f64, f64) {
     const NDAT: usize = 10000;

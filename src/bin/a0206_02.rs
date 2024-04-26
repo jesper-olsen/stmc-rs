@@ -1,6 +1,6 @@
-use marsaglia_rs::chi2::chi2_df;
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot::plot2;
+use stmc_rs::chi2::chi2_df;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::plot::plot2;
 use std::process;
 
 // CHI2 Test for events from one dice versus another.

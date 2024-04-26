@@ -1,4 +1,4 @@
-use marsaglia_rs::f::{f_df, f_xq};
+use stmc_rs::f::{f_df, f_xq};
 
 // F-Ratio: test of the correctness of the q-tile function F_XQ.
 

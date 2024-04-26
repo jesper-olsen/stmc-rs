@@ -1,6 +1,6 @@
-use marsaglia_rs::gau::{gau_pd, gau_qdf};
-use marsaglia_rs::plot::plot2;
-use marsaglia_rs::student::{stud_pd, stud_qdf};
+use stmc_rs::gau::{gau_pd, gau_qdf};
+use stmc_rs::plot::plot2;
+use stmc_rs::student::{stud_pd, stud_qdf};
 
 const NGNU: i32 = 60;
 const NFMAX: usize = 8;

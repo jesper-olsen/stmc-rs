@@ -1,5 +1,5 @@
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::steb::{steb0, steb2};
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::steb::{steb0, steb2};
 
 fn main() {
     const KMAX: usize = 10;

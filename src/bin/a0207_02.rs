@@ -1,5 +1,5 @@
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::steb::{bias, datjack, steb0, stebj0};
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::steb::{bias, datjack, steb0, stebj0};
 
 // VARIANCE EXAMPLE FOR DOUBLE JACKKNIFE BIAS CORRECTED
 // ESTIMATORS (Berg, Comp. Phys. 69 (92) 7-14).

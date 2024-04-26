@@ -60,6 +60,7 @@ pub fn fit_l(data: &[(f64, f64, f64)]) -> LFit {
         .iter()
         .map(|(x, y, sgy)| ((y - a.0 - a.1 * x) / sgy).powi(2))
         .sum();
+
     let q = if data.len() > 2 {
         1.0 - gamma_p(0.5 * (data.len() - 2) as f64, 0.5 * chi2)
     } else {
@@ -80,6 +81,31 @@ pub fn fit_l(data: &[(f64, f64, f64)]) -> LFit {
     }
 }
 
+// Fit y=c1+c2/x -> ynew=c1*x+c2=a1+a2*x
+pub fn subl_1ox(x: f64, y: f64, ey: f64) -> (f64, f64, f64) {
+    (x, y * x, ey * x)
+}
+
+// Fit y=c1+c2/x -> ynew=c1*x+c2=a1+a2*x
+pub fn subplot_1ox(lfit: &LFit, data: &[(f64, f64, f64)], nplot: usize) -> (Vec<f64>, Vec<f64>) {
+    let (x0, _, _) = data[0];
+    let (xn, _, _) = data[data.len() - 1];
+    let delx = (xn - x0) / nplot as f64;
+
+    let mut vx = Vec::new();
+    let mut vy = Vec::new();
+    let c1 = lfit.a.1;
+    let c2 = lfit.a.0;
+    for i in 0..nplot + 1 {
+        let xx = x0 + i as f64 * delx;
+        let yy = c1 + c2 / xx;
+        vx.push(xx);
+        vy.push(yy);
+    }
+    (vx, vy)
+}
+
+
 // Fit y=c1*exp(-c2*ln(x)) -> ynew=ln(y)=ln(c1)-c2*xnew
 // with xnew=ln(x). Then: a1=ln(c1), a2=-c2.
 pub fn subl_power(x: f64, y: f64, ey: f64) -> (f64, f64, f64) {
@@ -88,9 +114,23 @@ pub fn subl_power(x: f64, y: f64, ey: f64) -> (f64, f64, f64) {
     (x.ln(), yt, yup - yt)
 }
 
-// Fit y=c1+c2/x -> ynew=c1*x+c2=a1+a2*x
-pub fn subl_1ox(x: f64, y: f64, ey: f64) -> (f64, f64, f64) {
-    (x, y * x, ey * x)
+// gives plot y=c1*exp(-c2*ln(x)).
+pub fn subplot_power(lfit: &LFit, data: &[(f64, f64, f64)], nplot: usize) -> (Vec<f64>, Vec<f64>) {
+    let (x0, _, _) = data[0];
+    let (xn, _, _) = data[data.len() - 1];
+    let delx = (xn.exp() - x0.exp()) / nplot as f64;
+
+    let mut vx = Vec::new();
+    let mut vy = Vec::new();
+    let c1 = lfit.a.0.exp();
+    let c2 = -lfit.a.1;
+    for i in 0..nplot + 1 {
+        let xx = x0 + i as f64 * delx;
+        let yy = c1*xx.powf(-c2);
+        vx.push(xx);
+        vy.push(yy);
+    }
+    (vx, vy)
 }
 
 const M2X2_1: [[f64; 2]; 2] = [[1.0, 0.0], [0.0, 1.0]];

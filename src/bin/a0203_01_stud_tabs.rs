@@ -1,5 +1,5 @@
-use marsaglia_rs::gau::gau_df;
-use marsaglia_rs::student::{stud_df, stud_xq};
+use stmc_rs::gau::gau_df;
+use stmc_rs::student::{stud_df, stud_xq};
 
 ///  STUDENT DISTRIBUTION: CONFIDENCE LEVELS FOR SMALL GAUSSIAN SAMPLES.
 

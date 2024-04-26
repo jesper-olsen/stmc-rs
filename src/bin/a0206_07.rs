@@ -1,6 +1,6 @@
-use marsaglia_rs::kolm::kolm2_del2;
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot::plot2;
+use stmc_rs::kolm::kolm2_del2;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::plot::plot2;
 
 fn main() {
     k2();

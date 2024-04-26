@@ -1,6 +1,6 @@
-use marsaglia_rs::gau::gaudif;
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot::plot;
+use stmc_rs::gau::gaudif;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::plot::plot;
 
 //C Generate 2*10000 Gaussian random numbers, let the difference
 //C between the mean expectation values be 0,1,2, ....

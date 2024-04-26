@@ -1,5 +1,5 @@
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot::plot;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::plot::plot;
 use std::f64::consts::PI;
 
 fn gaussian_pdf(x: f64, mean: f64, std_dev: f64) -> f64 {

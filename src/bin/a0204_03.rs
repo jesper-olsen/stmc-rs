@@ -1,5 +1,5 @@
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::steb::{steb0, steb2};
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::steb::{steb0, steb2};
 
 // Reproduces Table 2.1 p. 83
 

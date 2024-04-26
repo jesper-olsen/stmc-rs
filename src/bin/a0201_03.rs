@@ -1,5 +1,5 @@
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::steb::steb1;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::steb::steb1;
 
 fn main() {
     let mut rng = Marsaglia::new(12, 34, 56, 78);

@@ -1,4 +1,4 @@
-use marsaglia_rs::f::f_xq;
+use stmc_rs::f::f_xq;
 
 // Confidence intervals for F ratio estimates
 // Reproduces Table 2.12 p.88

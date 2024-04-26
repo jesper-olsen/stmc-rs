@@ -1,4 +1,4 @@
-use marsaglia_rs::gau::{sebar_e, sebar_e_as};
+use stmc_rs::gau::{sebar_e, sebar_e_as};
 
 ///ERROR BAR OF THE VARIANCE: ASYMPTOTIC LARGE N BEHAVIOUR.
 

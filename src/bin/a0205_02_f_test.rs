@@ -1,5 +1,5 @@
-use marsaglia_rs::f::ftest;
-use marsaglia_rs::{get_number, yes};
+use stmc_rs::f::ftest;
+use stmc_rs::{get_number, yes};
 
 // VARIANCE RATIO TEST (F-TEST): COMPARISON OF TWO ERROR BARS.
 fn main() {
@@ -27,7 +27,7 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use marsaglia_rs::f::ftest;
+    use stmc_rs::f::ftest;
     #[test]
     fn f_test() {
         // Table 2.11, pp.88

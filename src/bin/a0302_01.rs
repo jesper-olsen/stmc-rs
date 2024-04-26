@@ -1,6 +1,6 @@
 use gnuplot::{Caption, Color, Figure};
-use marsaglia_rs::gau::{gau_df, gau_qdf};
-use marsaglia_rs::marsaglia::Marsaglia;
+use stmc_rs::gau::{gau_df, gau_qdf};
+use stmc_rs::marsaglia::Marsaglia;
 
 use std::fs::File;
 use std::io::prelude::*;

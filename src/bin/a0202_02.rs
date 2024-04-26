@@ -1,5 +1,5 @@
-use marsaglia_rs::chi2::{chi2pdf_pd, chi2pdf_qdf};
-use marsaglia_rs::plot::plot2;
+use stmc_rs::chi2::{chi2pdf_pd, chi2pdf_qdf};
+use stmc_rs::plot::plot2;
 
 const NGNU: usize = 60;
 const NFMAX: usize = 20;

@@ -1,4 +1,4 @@
-use marsaglia_rs::chi2::chi2pdf_xq;
+use stmc_rs::chi2::chi2pdf_xq;
 
 // ERROR BAR OF THE VARIANCE: ASYMPTOTIC LARGE N BEHAVIOUR.
 // Table 2.9 p. 82

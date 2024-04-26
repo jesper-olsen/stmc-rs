@@ -1,5 +1,5 @@
 use gnuplot::{AutoOption, AxesCommon, Caption, Color, Figure, PointSymbol};
-use marsaglia_rs::fitl::{fit_graph, fit_l, LFit};
+use stmc_rs::fitl::{fit_graph, fit_l, LFit};
 
 fn main() {
     lfit(true);

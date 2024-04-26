@@ -1,5 +1,5 @@
-use marsaglia_rs::gau::gaudif;
-use marsaglia_rs::steb::steb2;
+use stmc_rs::gau::gaudif;
+use stmc_rs::steb::steb2;
 
 const Q0CUT: f64 = 0.05;
 const P0CUT: f64 = 1.0 - Q0CUT;

@@ -1,4 +1,4 @@
-use marsaglia_rs::gamma::error_f;
+use stmc_rs::gamma::error_f;
 
 // GAUSSIAN: CONFIDENCE LIMIT FOR MULTIPLE STANDARD DEVIATIONS.
 

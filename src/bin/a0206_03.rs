@@ -1,6 +1,6 @@
-use marsaglia_rs::cau::cau_df;
-use marsaglia_rs::kolm::kolm1;
-use marsaglia_rs::marsaglia::Marsaglia;
+use stmc_rs::cau::cau_df;
+use stmc_rs::kolm::kolm1;
+use stmc_rs::marsaglia::Marsaglia;
 
 // Examples for the 1-sided Kolmogorov test.
 

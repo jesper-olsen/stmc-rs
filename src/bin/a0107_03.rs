@@ -1,5 +1,5 @@
-use marsaglia_rs::gamma::gamma_ln;
-use marsaglia_rs::marsaglia::Marsaglia;
+use stmc_rs::gamma::gamma_ln;
+use stmc_rs::marsaglia::Marsaglia;
 use std::f64::consts::PI;
 
 // C MOMENTS FOR NORMALLY DISTRIBUTED RANDOM NUMBERS.

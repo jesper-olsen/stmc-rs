@@ -1,4 +1,4 @@
-use marsaglia_rs::chi2::{chi2_df, chi2_xq, chi2pdf_df, chi2pdf_xq};
+use stmc_rs::chi2::{chi2_df, chi2_xq, chi2pdf_df, chi2pdf_xq};
 
 const NMAX: usize = 8;
 

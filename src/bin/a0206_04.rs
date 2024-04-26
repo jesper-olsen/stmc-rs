@@ -1,8 +1,8 @@
-use marsaglia_rs::cau::cau_df;
-use marsaglia_rs::gau::gau_df;
-use marsaglia_rs::kolm::{kolm1, kolm1_as};
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot::plot2;
+use stmc_rs::cau::cau_df;
+use stmc_rs::gau::gau_df;
+use stmc_rs::kolm::{kolm1, kolm1_as};
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::plot::plot2;
 
 // Statistical investigation of the 1-sided Kolmogorov test.
 // Examples: Uniform, Gaussian and Cauchy random numbers.f

@@ -1,4 +1,4 @@
-use marsaglia_rs::marsaglia::Marsaglia;
+use stmc_rs::marsaglia::Marsaglia;
 
 fn min_max_test() {
     let mut rng = Marsaglia::new(12, 34, 56, 78);

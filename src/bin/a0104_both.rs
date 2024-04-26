@@ -1,8 +1,8 @@
-use marsaglia_rs::cau::{cauchy_cdf, cauchy_pdf};
-use marsaglia_rs::gau::{gau_df, gau_pd};
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::plot;
-use marsaglia_rs::{uniform_cdf, uniform_pdf};
+use stmc_rs::cau::{cauchy_cdf, cauchy_pdf};
+use stmc_rs::gau::{gau_df, gau_pd};
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::plot;
+use stmc_rs::{uniform_cdf, uniform_pdf};
 use ndarray::Array1;
 use plotters::prelude::*;
 use std::collections::HashMap;

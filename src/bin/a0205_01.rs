@@ -1,5 +1,5 @@
-use marsaglia_rs::f::{f_df, f_pd, f_qdf};
-use marsaglia_rs::plot::plot2;
+use stmc_rs::f::{f_df, f_pd, f_qdf};
+use stmc_rs::plot::plot2;
 
 const NGNU: usize = 280;
 const NDVD: usize = 70;

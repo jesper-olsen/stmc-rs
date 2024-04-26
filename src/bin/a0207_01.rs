@@ -1,5 +1,5 @@
-use marsaglia_rs::marsaglia::Marsaglia;
-use marsaglia_rs::steb::{datjack, steb0, stebj0, stebj1};
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::steb::{datjack, steb0, stebj0, stebj1};
 
 fn main() {
     jack_eb();
