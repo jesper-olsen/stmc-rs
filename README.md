@@ -7,6 +7,7 @@ Gnuplot and Plotters used for graphing.
 References
 ----------
 [1] Markov Chain Monte Carlo Simulations and Their Statistical Analysis, Bernd A. Berg
+
 [2] [Fortran Code](https://www.worldscientific.com/worldscibooks/10.1142/5602)
 
 Run
