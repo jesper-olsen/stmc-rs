@@ -16,4 +16,4 @@ Run
 cargo run --release --bin a0208_02
 ```
 
-![PNG](https://raw.githubusercontent.com/jesper-olsen/stmc-rs/master/fig_a0208_02.png) 
+![PNG](https://github.com/jesper-olsen/stmc-rs/blob/master/Assets/fig_a0208_02.png)
