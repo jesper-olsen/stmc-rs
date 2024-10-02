@@ -9,6 +9,7 @@ pub mod gamma;
 pub mod gau;
 pub mod kolm;
 pub mod marsaglia;
+pub mod mersenne;
 pub mod plot;
 pub mod potts;
 pub mod steb;
