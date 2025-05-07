@@ -1,9 +1,9 @@
 // 2d Ising model: Energy histogram from naive sampling.
 use gnuplot::{AutoOption, AxesCommon, Caption, Color, Figure, PointSymbol};
-use stmc_rs::marsaglia::Marsaglia;
-use stmc_rs::potts::Potts;
 use std::fs::File;
 use std::io::Write;
+use stmc_rs::marsaglia::Marsaglia;
+use stmc_rs::potts::Potts;
 
 fn main() {
     let mut rng = Marsaglia::new(12, 34, 56, 78);
@@ -51,12 +51,20 @@ fn main() {
     fg.axes2d()
         .set_x_label("e_s", &[])
         .set_y_label("H", &[])
-        .lines(&x, &y, &[Caption("Random Sampling"), Color("red")])
+        .lines(
+            &x,
+            &y,
+            &[Caption("Random Sampling"), Color(gnuplot::RGBString("red"))],
+        )
         .y_error_bars(
             &x,
             &y,
             &ey,
-            &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
+            &[
+                Caption(r"y\_error\_bars"),
+                PointSymbol('T'),
+                Color(gnuplot::RGBString("blue")),
+            ],
         );
     fg.show().unwrap();
 
@@ -129,17 +137,28 @@ fn main() {
         .set_x_range(AutoOption::Fix(0.4), AutoOption::Fix(-2.0))
         .set_y_range(AutoOption::Fix(0.0), AutoOption::Fix(6000.0))
         .set_y_label("H", &[])
-        .lines(&x, &y, &[Caption("Random Sampling"), Color("red")])
+        .lines(
+            &x,
+            &y,
+            &[Caption("Random Sampling"), Color(gnuplot::RGBString("red"))],
+        )
         .y_error_bars(
             &x,
             &y,
             &ey,
-            &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
+            &[
+                Caption(r"y\_error\_bars"),
+                PointSymbol('T'),
+                Color(gnuplot::RGBString("blue")),
+            ],
         )
         .lines(
             &x2,
             &y2,
-            &[Caption("Weighted to \u{03B2}=0.2"), Color("green")],
+            &[
+                Caption("Weighted to \u{03B2}=0.2"),
+                Color(gnuplot::RGBString("green")),
+            ],
         )
         .y_error_bars(
             &x2,
@@ -148,7 +167,7 @@ fn main() {
             &[
                 Caption(r"y\_error\_bars"),
                 PointSymbol('T'),
-                Color("orange"),
+                Color(gnuplot::RGBString("orange")),
             ],
         );
     fg.show().unwrap();

@@ -44,8 +44,12 @@ fn main() {
         fg.axes2d()
             .set_x_label("x", &[])
             .set_y_label("F", &[])
-            .lines(&vx, &vf, &[Caption("F"), Color("red")])
-            .lines(&vx, &vfq, &[Caption("Fq"), Color("blue")]);
+            .lines(&vx, &vf, &[Caption("F"), Color(gnuplot::RGBString("red"))])
+            .lines(
+                &vx,
+                &vfq,
+                &[Caption("Fq"), Color(gnuplot::RGBString("blue"))],
+            );
         fg.show().unwrap();
     }
 }

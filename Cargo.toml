@@ -1,12 +1,11 @@
 [package]
 name = "stmc_rs"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-gnuplot = "0.0.43"
-itertools = "0.12.1"
-ndarray = "0.15.6"
-plotters = "0.3.5"
+gnuplot = "0.0.46"
+ndarray = "0.16.1"
+plotters = "0.3.7"

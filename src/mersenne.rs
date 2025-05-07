@@ -7,6 +7,7 @@
 //! and included intact in the comment below
 
 /*!
+```text
    A C-program for MT19937-64 (2004/9/29 version).
    Coded by Takuji Nishimura and Makoto Matsumoto.
 
@@ -190,6 +191,7 @@ int main(void)
     return 0;
 }
 
+```
 */
 
 const NN: usize = 312;

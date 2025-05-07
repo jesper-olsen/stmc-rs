@@ -41,8 +41,16 @@ fn main() {
     let mut fg = Figure::new();
     fg.set_title("df01");
     fg.axes2d()
-        .lines(&adf[0], &adf[1], &[Caption("Line 1"), Color("red")])
-        .lines(&adf[0], &adf[2], &[Caption("Line 2"), Color("blue")]);
+        .lines(
+            &adf[0],
+            &adf[1],
+            &[Caption("Line 1"), Color(gnuplot::RGBString("red"))],
+        )
+        .lines(
+            &adf[0],
+            &adf[2],
+            &[Caption("Line 2"), Color(gnuplot::RGBString("blue"))],
+        );
     fg.show().unwrap();
 
     let mut adf2 = [vec![data[0]], vec![0.0], vec![0.0]];
@@ -62,17 +70,41 @@ fn main() {
     let mut fg = Figure::new();
     fg.set_title("df peaked");
     fg.axes2d()
-        .lines(&adf[0], &adf[2], &[Caption("Line 1"), Color("red")])
-        .lines(&adf2[0], &adf2[2], &[Caption("Line 2"), Color("blue")]);
+        .lines(
+            &adf[0],
+            &adf[2],
+            &[Caption("Line 1"), Color(gnuplot::RGBString("red"))],
+        )
+        .lines(
+            &adf2[0],
+            &adf2[2],
+            &[Caption("Line 2"), Color(gnuplot::RGBString("blue"))],
+        );
     fg.show().unwrap();
 
     let mut fg = Figure::new();
     fg.set_title("df all");
     fg.axes2d()
-        .lines(&adf[0], &adf[1], &[Caption("Line 1"), Color("red")])
-        .lines(&adf[0], &adf[2], &[Caption("Line 2"), Color("green")])
-        .lines(&adf2[0], &adf2[1], &[Caption("Line 3"), Color("blue")])
-        .lines(&adf2[0], &adf2[2], &[Caption("Line 4"), Color("pink")]);
+        .lines(
+            &adf[0],
+            &adf[1],
+            &[Caption("Line 1"), Color(gnuplot::RGBString("red"))],
+        )
+        .lines(
+            &adf[0],
+            &adf[2],
+            &[Caption("Line 2"), Color(gnuplot::RGBString("green"))],
+        )
+        .lines(
+            &adf2[0],
+            &adf2[1],
+            &[Caption("Line 3"), Color(gnuplot::RGBString("blue"))],
+        )
+        .lines(
+            &adf2[0],
+            &adf2[2],
+            &[Caption("Line 4"), Color(gnuplot::RGBString("pink"))],
+        );
     fg.show().unwrap();
 }
 

@@ -1,5 +1,5 @@
-use stmc_rs::fitl::{fit_l, fit_graph, subl_power, subplot_power, LFit};
 use gnuplot::{AxesCommon, Caption, Color, Figure, PointSymbol};
+use stmc_rs::fitl::{LFit, fit_graph, fit_l, subl_power, subplot_power};
 
 fn main() {
     lfit(true);
@@ -36,7 +36,11 @@ fn lfit(plot: bool) -> LFit {
                 DATA.iter().map(|(x, _, _)| *x).collect::<Vec<f64>>(),
                 DATA.iter().map(|(_, y, _)| *y).collect::<Vec<f64>>(),
                 DATA.iter().map(|(_, _, ey)| *ey).collect::<Vec<f64>>(),
-                &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
+                &[
+                    Caption(r"y\_error\_bars"),
+                    PointSymbol('T'),
+                    Color(gnuplot::RGBString("blue")),
+                ],
             );
         fg.show().unwrap();
 
@@ -52,7 +56,7 @@ fn lfit(plot: bool) -> LFit {
             .lines(
                 ev1.iter().map(|(x, _)| *x).collect::<Vec<f64>>(),
                 ev1.iter().map(|(_, y)| *y).collect::<Vec<f64>>(),
-                &[Caption("Ellipse"), Color("red")],
+                &[Caption("Ellipse"), Color(gnuplot::RGBString("red"))],
             )
             .lines(
                 ev2.iter().map(|(x, _)| *x).collect::<Vec<f64>>(),
@@ -73,18 +77,21 @@ fn lfit(plot: bool) -> LFit {
                 DATA.iter().map(|(x, _, _)| *x).collect::<Vec<f64>>(),
                 DATA.iter().map(|(_, y, _)| *y).collect::<Vec<f64>>(),
                 DATA.iter().map(|(_, _, ey)| *ey).collect::<Vec<f64>>(),
-                &[Caption(r"y\_error\_bars"), PointSymbol('T'), Color("blue")],
+                &[
+                    Caption(r"y\_error\_bars"),
+                    PointSymbol('T'),
+                    Color(gnuplot::RGBString("blue")),
+                ],
             );
         fg.show().unwrap();
     }
-
 
     r
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{lfit, LFit};
+    use crate::{LFit, lfit};
     #[test]
     fn lfit_test() {
         let expected = LFit {
