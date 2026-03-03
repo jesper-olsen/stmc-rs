@@ -20,7 +20,7 @@ fn uniform_histogram() {
         let width = (m as f64).ln() as usize;
 
         for bin in &bins {
-            println!("Bin {bin}: {:width$}", histogram[&bin]);
+            println!("Bin {bin}: {:width$}", histogram[bin]);
         }
 
         let dx = 1.0 / bins.len() as f64;

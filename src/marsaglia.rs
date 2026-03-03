@@ -16,6 +16,12 @@ pub struct Marsaglia {
     gauss: Option<f64>,
 }
 
+impl Default for Marsaglia {
+    fn default() -> Self {
+        Marsaglia::new(12, 34, 56, 78)
+    }
+}
+
 impl Marsaglia {
     //C*** FIRST CALL RSTART (I, J, K, L)
     //C*** WITH I, J, K, L INTEGERS
