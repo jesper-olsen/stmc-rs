@@ -134,8 +134,7 @@ fn two_xr_b() {
     let (_, qq) = kolm2_as(&a);
     println!(" Q for the Q distribution = {qq:9.4}");
 
-    let mut graphs = Vec::new();
-    graphs.push((String::new(), v));
+    let graphs = vec![(String::new(),v)];
 
     plot2(
         "fig_a0206_06b.png",
