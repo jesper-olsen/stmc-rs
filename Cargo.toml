@@ -7,5 +7,5 @@ edition = "2024"
 
 [dependencies]
 gnuplot = "0.0.46"
-ndarray = "0.16.1"
+ndarray = "0.17.2"
 plotters = "0.3.7"
