@@ -25,11 +25,7 @@ pub fn chi2pdf_qdf(chi2: f64, nf: usize) -> f64 {
     let a = 0.5 * nf as f64;
     let x = a * chi2;
     let g = gamma_p(a, x);
-    if g <= 0.5 {
-        g
-    } else {
-        1.0 - g
-    }
+    if g <= 0.5 { g } else { 1.0 - g }
 }
 
 pub fn chi2pdf_xq(q: f64, nf: usize) -> f64 {

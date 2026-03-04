@@ -1,6 +1,6 @@
+use std::f64::consts::PI;
 use stmc_rs::gamma::gamma_ln;
 use stmc_rs::marsaglia::Marsaglia;
-use std::f64::consts::PI;
 
 // C MOMENTS FOR NORMALLY DISTRIBUTED RANDOM NUMBERS.
 fn main() {

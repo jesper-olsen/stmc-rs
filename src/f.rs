@@ -20,11 +20,7 @@ pub fn ftest(eb1: f64, eb2: f64, ndat1: u32, ndat2: u32) -> f64 {
     let va2 = eb2.powi(2) * ndat2 as f64;
     let f = va1 / va2; //  Definitions take per degree of freedom already into account!
     let q = 2.0 * f_df(f, nf1, nf2);
-    if q > 1.0 {
-        2.0 - q
-    } else {
-        q
-    }
+    if q > 1.0 { 2.0 - q } else { q }
 }
 
 // VARIANCE RATIO PROBABILITY DENSITY
@@ -47,11 +43,7 @@ pub fn f_qdf(f: f64, nf1: u32, nf2: u32) -> f64 {
     let xf2h = 0.5 * nf2;
     let x = nf2 / (nf1 * f + nf2);
     let f_qdf = 1.0 - beta_i(x, xf2h, xf1h);
-    if f_qdf > 0.5 {
-        1.0 - f_qdf
-    } else {
-        f_qdf
-    }
+    if f_qdf > 0.5 { 1.0 - f_qdf } else { f_qdf }
 }
 
 pub fn f_xq(q: f64, nf1: u32, nf2: u32) -> f64 {

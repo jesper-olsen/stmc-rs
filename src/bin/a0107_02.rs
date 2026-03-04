@@ -1,5 +1,5 @@
-use stmc_rs::marsaglia::Marsaglia;
 use std::f64::consts::PI;
+use stmc_rs::marsaglia::Marsaglia;
 
 fn main() {
     println!("MOMENTS 1-4 FOR UNIFORM RANDOM NUMBERS AND 1-2 FOR CAUCHY RANDOM NUMERS:\n");

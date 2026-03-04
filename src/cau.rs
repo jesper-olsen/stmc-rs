@@ -13,11 +13,7 @@ pub fn cau_df(x: f64) -> f64 {
 
 pub fn cau_qdf(x: f64) -> f64 {
     let y = cau_df(x);
-    if y > 0.5 {
-        1.0 - y
-    } else {
-        y
-    }
+    if y > 0.5 { 1.0 - y } else { y }
 }
 
 pub fn cau_xq(q: f64) -> f64 {

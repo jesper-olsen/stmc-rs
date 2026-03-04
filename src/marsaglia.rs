@@ -74,11 +74,7 @@ impl Marsaglia {
             self.c += self.cm;
         }
         uni -= self.c;
-        if uni < 0.0 {
-            uni + 1.0
-        } else {
-            uni
-        }
+        if uni < 0.0 { uni + 1.0 } else { uni }
     }
 
     // normally distributed random number
@@ -121,10 +117,10 @@ mod tests {
         }
         #[rustfmt::skip]
         const R: [i32; 35] = [
-            6, 3, 11,  3,  0,  4, 0, 
-           13, 8, 15, 11, 11, 14, 0, 
-            6, 15, 0,  2,  3, 11, 0, 
-            5, 14, 2, 14,  4,  8, 0, 
+            6, 3, 11,  3,  0,  4, 0,
+           13, 8, 15, 11, 11, 14, 0,
+            6, 15, 0,  2,  3, 11, 0,
+            5, 14, 2, 14,  4,  8, 0,
             7, 15, 7, 10, 12,  2, 0,
         ];
         assert!(l.iter().eq(R.iter()));

@@ -21,11 +21,7 @@ pub fn stud_pd(t: f64, nf: usize) -> f64 {
 
 pub fn stud_qdf(t: f64, nf: usize) -> f64 {
     let f = stud_df(t, nf);
-    if f > 0.5 {
-        1.0 - f
-    } else {
-        f
-    }
+    if f > 0.5 { 1.0 - f } else { f }
 }
 
 pub fn stud_xq(q: f64, nf: usize) -> f64 {

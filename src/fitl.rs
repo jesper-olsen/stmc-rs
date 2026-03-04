@@ -105,7 +105,6 @@ pub fn subplot_1ox(lfit: &LFit, data: &[(f64, f64, f64)], nplot: usize) -> (Vec<
     (vx, vy)
 }
 
-
 // Fit y=c1*exp(-c2*ln(x)) -> ynew=ln(y)=ln(c1)-c2*xnew
 // with xnew=ln(x). Then: a1=ln(c1), a2=-c2.
 pub fn subl_power(x: f64, y: f64, ey: f64) -> (f64, f64, f64) {
@@ -126,7 +125,7 @@ pub fn subplot_power(lfit: &LFit, data: &[(f64, f64, f64)], nplot: usize) -> (Ve
     let c2 = -lfit.a.1;
     for i in 0..nplot + 1 {
         let xx = x0 + i as f64 * delx;
-        let yy = c1*xx.powf(-c2);
+        let yy = c1 * xx.powf(-c2);
         vx.push(xx);
         vy.push(yy);
     }

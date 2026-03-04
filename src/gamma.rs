@@ -22,11 +22,7 @@ pub fn gamma_ln(x: f64) -> f64 {
     let ser = ((1.0 + C1_L / y) + C2_L / (y + 1.0)) + C3_L / (y + 2.0);
     let ser = ((ser + C4_L / (y + 3.0)) + C5_L / (y + 4.0)) + C6_L / (y + 5.0);
     let gamma_ln = (y - 0.5) * (y + 4.5).ln() - (y + 4.5) + (STP_L * ser).ln();
-    if x > 1.0 {
-        gamma_ln
-    } else {
-        gamma_ln - x.ln()
-    }
+    if x > 1.0 { gamma_ln } else { gamma_ln - x.ln() }
 }
 
 pub fn gamma_p(a: f64, x: f64) -> f64 {

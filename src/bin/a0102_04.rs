@@ -1,6 +1,6 @@
+use std::collections::HashMap;
 use stmc_rs::marsaglia::Marsaglia;
 use stmc_rs::plot::plot;
-use std::collections::HashMap;
 
 fn uniform_histogram() {
     let mut ymax = 0.0;

@@ -27,11 +27,7 @@ pub fn gau_df(x: f64) -> f64 {
 /// GAUSSIAN PEAKED DISTRIBUTION FUNCTION.
 pub fn gau_qdf(x: f64) -> f64 {
     let f = 0.5 + 0.5 * gamma::error_f(x / 2.0f64.sqrt());
-    if f <= 0.5 {
-        f
-    } else {
-        1.0 - f
-    }
+    if f <= 0.5 { f } else { 1.0 - f }
 }
 
 pub fn gau_xq(q: f64) -> f64 {
