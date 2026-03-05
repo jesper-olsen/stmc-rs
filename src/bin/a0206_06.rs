@@ -8,24 +8,19 @@ fn main() {
 }
 
 fn f1x(y: f64) -> f64 {
-    if y <= 0.0 {
-        0.0
-    } else if y <= 1.0 {
-        y
-    } else {
-        1.0
+    match y {
+        y if y <= 0.0 => 0.0,
+        y if y <= 1.0 => y,
+        _ => 1.0,
     }
 }
 
 fn f2x(y: f64) -> f64 {
-    if y <= 0.0 {
-        0.0
-    } else if y <= 1.0 {
-        0.5 * y.powi(2)
-    } else if y <= 2.0 {
-        0.5 * y * (4.0 - y) - 1.0
-    } else {
-        1.0
+    match y {
+        y if y <= 0.0 => 0.0,
+        y if y <= 1.0 => 0.5 * y.powi(2),
+        y if y <= 2.0 => 0.5 * y * (4.0 - y) - 1.0,
+        _ => 1.0,
     }
 }
 
@@ -80,6 +75,7 @@ fn two_xr_a() {
         0.0..0.5,
     );
 }
+
 fn get_rng(irpt: i32) -> Marsaglia {
     let ij = 1 + 1801;
     let kl = 9373 + 0 + irpt;
