@@ -26,7 +26,7 @@ fn gaussian_histogram() {
     bins.sort();
     let width = (2.0 * m as f64).ln() as usize;
     for bin in &bins {
-        println!("Bin {bin:2}: {:width$}", histogram[&bin]);
+        println!("Bin {bin:2}: {:width$}", histogram[bin]);
     }
 
     let dx = 6.0 / bins.len() as f64;

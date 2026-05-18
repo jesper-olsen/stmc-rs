@@ -62,8 +62,7 @@ fn two_xr_a() {
     println!(" Q for the Q distribution = {qq:9.4}");
     assert!((qq - 0.9278).abs() < 1e-4);
 
-    let mut graphs = Vec::new();
-    graphs.push((String::new(), v));
+    let graphs = vec![(String::new(), v)];
 
     plot2(
         "fig_a0206_06a.png",

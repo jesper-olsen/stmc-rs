@@ -96,8 +96,8 @@ pub fn kolm2_as(fxct: &[f64]) -> (f64, f64) {
     let mut sign_two = 2.0;
     let mut q = 0.0f64;
     let mut cut = 0.0;
-    for j in 1..=100 {
-        let add = sign_two * (a * (j as i32).pow(2) as f64).exp();
+    for j in 1..=100i32 {
+        let add = sign_two * (a * j.pow(2) as f64).exp();
         q += add;
         if add.abs() < cut {
             return (del, q);
@@ -147,8 +147,8 @@ pub fn kolm2_as2(dat1: &[f64], dat2: &[f64]) -> (f64, f64) {
     let mut sign_two = 2.0;
     let mut q = 0.0;
     let mut cut = 0.0;
-    for j in 1..=100 {
-        let add = sign_two * (a * (j as i32).pow(2) as f64).exp();
+    for j in 1..=100i32 {
+        let add = sign_two * (a * j.pow(2) as f64).exp();
         q += add;
         if add.abs() < cut {
             return (del, q);

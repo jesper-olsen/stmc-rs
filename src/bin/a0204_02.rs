@@ -1,6 +1,6 @@
 use stmc_rs::gau::{sebar_e, sebar_e_as};
 
-///ERROR BAR OF THE VARIANCE: ASYMPTOTIC LARGE N BEHAVIOUR.
+// ERROR BAR OF THE VARIANCE: ASYMPTOTIC LARGE N BEHAVIOUR.
 
 fn main() {
     const NMAX: usize = 14;

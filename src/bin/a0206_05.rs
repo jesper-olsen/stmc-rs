@@ -1,8 +1,8 @@
 use stmc_rs::kolm::{kolm1, kolm2_as};
 use stmc_rs::marsaglia::Marsaglia;
 
-/// Comparision of the asymptotic 2-sided Kolmogorov test with
-/// results from the exact one sided test.
+// Comparision of the asymptotic 2-sided Kolmogorov test with
+// results from the exact one sided test.
 
 fn kol2() -> Vec<(f64, f64, f64)> {
     let mut l = Vec::new();
